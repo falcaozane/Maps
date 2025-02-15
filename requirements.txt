@@ -9,3 +9,4 @@ networkx
 plotly
 requests
 python-dotenv
+gunicorn
