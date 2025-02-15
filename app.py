@@ -330,5 +330,151 @@ def create_route_animation_data(G, path_time, path_length):
     
     return df
 
+@app.route('/api/stores/locations', methods=['GET'])
+def get_all_store_locations():
+    """Get a map showing all stores in the given radius with colors based on distance"""
+    try:
+        lat = float(request.args.get('lat'))
+        lon = float(request.args.get('lon'))
+        radius = float(request.args.get('radius', 10))
+        
+        # Get nearby stores
+        nearby_stores = store_locator.find_nearby_stores(lat, lon, radius)
+        
+        # Create base map centered on user location
+        m = folium.Map(
+            location=[lat, lon],
+            zoom_start=12,
+            tiles="cartodbpositron"
+        )
+        
+        # Add user location marker
+        folium.Marker(
+            [lat, lon],
+            popup='Your Location',
+            icon=folium.Icon(color='green', icon='home')
+        ).add_to(m)
+        
+        # Add markers for each store with color coding based on distance
+        for store in nearby_stores:
+            # Color code based on distance
+            if store['distance'] <= 2:
+                color = 'red'  # Very close
+            elif store['distance'] <= 5:
+                color = 'orange'  # Moderate distance
+            else:
+                color = 'blue'  # Further away
+                
+            # Create detailed popup content
+            popup_content = f"""
+            <div style='width: 200px'>
+                <h4 style='color: {color}'>{store['store_name']}</h4>
+                <b>Address:</b> {store['address']}<br>
+                <b>Distance:</b> {store['distance']} km<br>
+                <b>Est. Delivery:</b> {store['estimated_delivery_time']} mins<br>
+                <b>Contact:</b> {store['contact']}<br>
+                <b>Categories:</b> {store['product_categories']}<br>
+                <a href='/api/stores/route?user_lat={lat}&user_lon={lon}&store_lat={store['location']['lat']}&store_lon={store['location']['lon']}' target='_blank'>Get Route</a>
+            </div>
+            """
+            
+            # Add store marker
+            folium.Marker(
+                location=[store['location']['lat'], store['location']['lon']],
+                popup=folium.Popup(popup_content, max_width=300),
+                icon=folium.Icon(color=color, icon='info-sign'),
+                tooltip=f"{store['store_name']} ({store['distance']} km)"
+            ).add_to(m)
+            
+            # Add circle to show distance
+            folium.Circle(
+                location=[store['location']['lat'], store['location']['lon']],
+                radius=store['distance'] * 100,  # Visual radius for the circle
+                color=color,
+                fill=True,
+                opacity=0.1
+            ).add_to(m)
+        
+        # Add distance circles from user location
+        folium.Circle(
+            location=[lat, lon],
+            radius=2000,  # 2km radius
+            color='red',
+            fill=False,
+            weight=1,
+            dash_array='5, 5'
+        ).add_to(m)
+        
+        folium.Circle(
+            location=[lat, lon],
+            radius=5000,  # 5km radius
+            color='orange',
+            fill=False,
+            weight=1,
+            dash_array='5, 5'
+        ).add_to(m)
+        
+        folium.Circle(
+            location=[lat, lon],
+            radius=radius * 1000,  # User-specified radius
+            color='blue',
+            fill=False,
+            weight=1,
+            dash_array='5, 5'
+        ).add_to(m)
+        
+        # Add legend
+        legend_html = '''
+        <div style="position: fixed; 
+                    bottom: 50px; right: 50px; width: 150px; height: 130px; 
+                    border:2px solid grey; z-index:9999; background-color:white;
+                    padding: 10px;
+                    font-size: 14px;
+                    border-radius: 5px;">
+            <p style="margin-bottom: 5px"><b>Distance Zones</b></p>
+            <p style="margin: 5px">
+                <i class="fa fa-circle" style="color:red"></i> &lt; 2 km
+            </p>
+            <p style="margin: 5px">
+                <i class="fa fa-circle" style="color:orange"></i> 2-5 km
+            </p>
+            <p style="margin: 5px">
+                <i class="fa fa-circle" style="color:blue"></i> &gt; 5 km
+            </p>
+        </div>
+        '''
+        m.get_root().html.add_child(folium.Element(legend_html))
+        
+        # Add layer controls and fullscreen option
+        folium.LayerControl(position='bottomleft').add_to(m)
+        plugins.Fullscreen(
+            position='topright',
+            title='Expand map',
+            title_cancel='Exit fullscreen',
+            force_separate_button=True
+        ).add_to(m)
+        
+        # Add search radius info
+        radius_info = f'''
+        <div style="position: fixed; 
+                    top: 50px; left: 50px; 
+                    border:2px solid grey; z-index:9999; background-color:white;
+                    padding: 10px;
+                    font-size: 14px;
+                    border-radius: 5px;">
+            <b>Search Radius:</b> {radius} km<br>
+            <b>Stores Found:</b> {len(nearby_stores)}
+        </div>
+        '''
+        m.get_root().html.add_child(folium.Element(radius_info))
+        
+        return m.get_root().render()
+    
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
