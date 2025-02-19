@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import os
 import time
+from functools import lru_cache
+from rtree import index
 
 app = Flask(__name__)
 CORS(app)
@@ -243,6 +245,9 @@ def create_route_animation_data(G, path_time, path_length):
     
     return df
 
+@app.route('/', methods=['GET']) 
+def home():
+    return "Welcome to falcao-maps"
 @app.route('/api/stores/nearby', methods=['GET'])
 
 def get_nearby_stores():
@@ -703,4 +708,4 @@ def get_all_store_locations():
         }), 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080,debug=True)
+    app.run(debug=True)
