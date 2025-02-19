@@ -9,6 +9,3 @@ networkx
 plotly
 requests
 python-dotenv
-gunicorn
-scikit-learn
-matplotlib

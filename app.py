@@ -42,9 +42,16 @@ class StoreLocator:
     def __init__(self, stores_dataframe):
         self.stores_df = stores_dataframe
         self.network_graph = None
-        
+        self.graph_cache = {}  # Cache for network graphs
+        self.spatial_index = self._build_spatial_index()
+
+    @lru_cache(maxsize=50)     
     def initialize_graph(self, center_point, dist=20000):
-        """Initialize road network graph for a given center point"""
+        """Initialize road network graph with caching"""
+        cache_key = f"{center_point[0]}_{center_point[1]}"
+        if cache_key in self.graph_cache:
+            self.network_graph = self.graph_cache[cache_key]
+            return True
         try:
             self.network_graph = ox.graph_from_point(center_point, dist=dist, network_type="drive")
             self.network_graph = ox.add_edge_speeds(self.network_graph)
@@ -53,6 +60,13 @@ class StoreLocator:
         except Exception as e:
             print(f"Error initializing graph: {str(e)}")
             return False
+        
+    def _build_spatial_index(self):
+        idx = index.Index()
+        for i, row in self.stores_df.iterrows():
+            idx.insert(i, (row['Latitude'], row['Longitude'], 
+                          row['Latitude'], row['Longitude']))
+        return idx
 
     def calculate_distance(self, lat1, lon1, lat2, lon2):
         """Calculate direct distance between two points"""
@@ -78,14 +92,16 @@ class StoreLocator:
         return round(base_minutes * multiplier)
 
     def find_nearby_stores(self, lat, lon, radius=5):
-        """Find stores within specified radius"""
+        """Find stores within radius using spatial index"""
         nearby_stores = []
+        bbox = (lat - radius/111.0, lon - radius/111.0, 
+               lat + radius/111.0, lon + radius/111.0)
         
-        for _, store in self.stores_df.iterrows():
+        for store_id in self.spatial_index.intersection(bbox):
+            store = self.stores_df.iloc[store_id]
             distance = self.calculate_distance(lat, lon, 
                                             store['Latitude'], 
                                             store['Longitude'])
-            
             if distance <= radius:
                 delivery_time = self.estimate_delivery_time(distance)
                 nearby_stores.append({
@@ -108,8 +124,12 @@ class StoreLocator:
         # Create base map
         m = folium.Map(location=[center_lat, center_lon], 
                       zoom_start=13,
-                      tiles="cartodbpositron")
+                      tiles="cartodbpositron",
+                      prefer_canvas=True
+                      )
         
+        # Create marker cluster for better performance with many markers
+        marker_cluster = plugins.MarkerCluster().add_to(m)
         # Add stores to map
         nearby_stores = self.find_nearby_stores(center_lat, center_lon, radius)
         
@@ -130,7 +150,7 @@ class StoreLocator:
                 location=[store['location']['lat'], store['location']['lon']],
                 popup=folium.Popup(popup_content, max_width=300),
                 icon=folium.Icon(color='red', icon='info-sign')
-            ).add_to(m)
+            ).add_to(marker_cluster)
             
             # Add line to show distance from center
             folium.PolyLine(
@@ -224,6 +244,7 @@ def create_route_animation_data(G, path_time, path_length):
     return df
 
 @app.route('/api/stores/nearby', methods=['GET'])
+
 def get_nearby_stores():
     """Get nearby stores based on user location"""
     try:
