@@ -9,3 +9,5 @@ networkx
 plotly
 requests
 python-dotenv
+rtree
+matplotlib
