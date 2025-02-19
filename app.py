@@ -248,8 +248,9 @@ def create_route_animation_data(G, path_time, path_length):
 @app.route('/', methods=['GET']) 
 def home():
     return "Welcome to falcao-maps"
-@app.route('/api/stores/nearby', methods=['GET'])
 
+
+@app.route('/api/stores/nearby', methods=['GET'])
 def get_nearby_stores():
     """Get nearby stores based on user location"""
     try:
