@@ -1,1615 +1,1616 @@
 
-<!DOCTYPE html>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <title>Nearby Stores</title>
+            <style>
+                body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    overflow: hidden;
+                }
+                #map {
+                    width: 100%;
+                    height: 100%;
+                }
+                .legend {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: white;
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+                    font-size: 12px;
+                    z-index: 1000;
+                }
+                .info-box {
+                    position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    background: white;
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+                    font-size: 12px;
+                    z-index: 1000;
+                }
+            </style>
+        </head>
+        <body>
+            <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Nearby Stores</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-        .legend {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-            font-size: 12px;
-            z-index: 1000;
-        }
-        .info-box {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-            font-size: 12px;
-            z-index: 1000;
-        }
-    </style>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_cfc49a0bf3373888b51e2d6828f60cf9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
 </head>
 <body>
-    <!DOCTYPE html>
-<html>
-<head>
-
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-<script>
-    L_NO_TOUCH = false;
-    L_DISABLE_3D = false;
-</script>
-
-<style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
-<style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-
-    <meta name="viewport" content="width=device-width,
-        initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <style>
-        #map_d1ed6f3019039c67ee276403cf131b3c {
-            position: relative;
-            width: 100.0%;
-            height: 100.0%;
-            left: 0.0%;
-            top: 0.0%;
-        }
-        .leaflet-container { font-size: 1rem; }
-    </style>
-
-</head>
-<body>
-
-
-    <div class="folium-map" id="map_d1ed6f3019039c67ee276403cf131b3c" ></div>
-
+    
+    
+            <div class="folium-map" id="map_cfc49a0bf3373888b51e2d6828f60cf9" ></div>
+        
 </body>
 <script>
-
-
-    var map_d1ed6f3019039c67ee276403cf131b3c = L.map(
-        "map_d1ed6f3019039c67ee276403cf131b3c",
-        {
-            center: [18.9685, 72.8325],
-            crs: L.CRS.EPSG3857,
-            zoom: 12,
-            zoomControl: true,
-            preferCanvas: false,
-        }
-    );
-
-    
-
-
-
-    var tile_layer_d78b06aae6e91a767af116057cccefa7 = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-        {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
-    );
-
-
-    tile_layer_d78b06aae6e91a767af116057cccefa7.addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_9df58986354e1caf8a73119d68555aad = L.marker(
-        [18.9685, 72.8325],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_3c0ce5b168debb4ce603856e97a40402 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "home", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
-    );
-    marker_9df58986354e1caf8a73119d68555aad.setIcon(icon_3c0ce5b168debb4ce603856e97a40402);
-
-
-var popup_757cc943da212b60e98109fdb0cc9fd3 = L.popup({"maxWidth": "100%"});
-
-
-    
-        var html_3185dffae6547a95ddf7db50963304a2 = $(`<div id="html_3185dffae6547a95ddf7db50963304a2" style="width: 100.0%; height: 100.0%;">Your Location</div>`)[0];
-        popup_757cc943da212b60e98109fdb0cc9fd3.setContent(html_3185dffae6547a95ddf7db50963304a2);
-    
-
-
-marker_9df58986354e1caf8a73119d68555aad.bindPopup(popup_757cc943da212b60e98109fdb0cc9fd3)
-;
-
-
-
-
-    var marker_2de8bf1129a0d106c0b7044fc569fe43 = L.marker(
-        [18.968, 72.8325],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_eb2075d5fcc5350fc21bc18424b82e36 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_2de8bf1129a0d106c0b7044fc569fe43.setIcon(icon_eb2075d5fcc5350fc21bc18424b82e36);
-
-
-var popup_4a40ab9c468d70c7c0657e5f10998d28 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_652d3a170c149c4bca9d1b4a0325ce89 = $(`<div id="html_652d3a170c149c4bca9d1b4a0325ce89" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store HH</h4>                 <b>Address:</b> 7071 Riverview Road, Mumbai<br>                 <b>Distance:</b> 0.06 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543243<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Sweets<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_4a40ab9c468d70c7c0657e5f10998d28.setContent(html_652d3a170c149c4bca9d1b4a0325ce89);
-    
-
-
-marker_2de8bf1129a0d106c0b7044fc569fe43.bindPopup(popup_4a40ab9c468d70c7c0657e5f10998d28)
-;
-
-
-
-
-    marker_2de8bf1129a0d106c0b7044fc569fe43.bindTooltip(
-        `<div>
-             Kirana Store HH (0.06 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_a900703d183817266bcc7c6af8a96f17 = L.circle(
-        [18.968, 72.8325],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 6.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_852881220e67c35b5c628af4e490382f = L.marker(
-        [18.968, 72.833],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_d104388551676ffbf879e524610a9325 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_852881220e67c35b5c628af4e490382f.setIcon(icon_d104388551676ffbf879e524610a9325);
-
-
-var popup_f346c5a4ba29b5c2ee8099d76c66a5cf = L.popup({"maxWidth": 300});
-
-
-    
-        var html_dfcb0d8a0adbea3c55f583e937a1a05b = $(`<div id="html_dfcb0d8a0adbea3c55f583e937a1a05b" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store P</h4>                 <b>Address:</b> 3435 River Road, Mumbai<br>                 <b>Distance:</b> 0.08 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543225<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Sweets<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_f346c5a4ba29b5c2ee8099d76c66a5cf.setContent(html_dfcb0d8a0adbea3c55f583e937a1a05b);
-    
-
-
-marker_852881220e67c35b5c628af4e490382f.bindPopup(popup_f346c5a4ba29b5c2ee8099d76c66a5cf)
-;
-
-
-
-
-    marker_852881220e67c35b5c628af4e490382f.bindTooltip(
-        `<div>
-             Kirana Store P (0.08 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_e1c30807868d3a8dfadcd15031a12f29 = L.circle(
-        [18.968, 72.833],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 8.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_690b5a71eff8aa1368dbd610c6cf588d = L.marker(
-        [18.9695, 72.8325],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_82522a879ea7918af250986118fac2c0 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_690b5a71eff8aa1368dbd610c6cf588d.setIcon(icon_82522a879ea7918af250986118fac2c0);
-
-
-var popup_9b71a868a1ef2ff90449d4774c6070c7 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_7c447071c761b1262666b7c6f7bae8c3 = $(`<div id="html_7c447071c761b1262666b7c6f7bae8c3" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store I</h4>                 <b>Address:</b> 2021 Market Lane, Mumbai<br>                 <b>Distance:</b> 0.11 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543218<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pet Supplies<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_9b71a868a1ef2ff90449d4774c6070c7.setContent(html_7c447071c761b1262666b7c6f7bae8c3);
-    
-
-
-marker_690b5a71eff8aa1368dbd610c6cf588d.bindPopup(popup_9b71a868a1ef2ff90449d4774c6070c7)
-;
-
-
-
-
-    marker_690b5a71eff8aa1368dbd610c6cf588d.bindTooltip(
-        `<div>
-             Kirana Store I (0.11 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_3e303e62323a6bcfa299b36fba9aa487 = L.circle(
-        [18.9695, 72.8325],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 11.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_a40d3f1d26f8a384228bc356a7db5d95 = L.marker(
-        [18.9685, 72.8335],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_2798ee5d33afe7b6ca6ace5349f0d592 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_a40d3f1d26f8a384228bc356a7db5d95.setIcon(icon_2798ee5d33afe7b6ca6ace5349f0d592);
-
-
-var popup_743fe8290763a8c977aefa1ea70fc0df = L.popup({"maxWidth": 300});
-
-
-    
-        var html_d83677e5914db1a53adef82fc38a30dc = $(`<div id="html_d83677e5914db1a53adef82fc38a30dc" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store S</h4>                 <b>Address:</b> 4041 Green Street, Mumbai<br>                 <b>Distance:</b> 0.11 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543228<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Home Decor<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9685&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_743fe8290763a8c977aefa1ea70fc0df.setContent(html_d83677e5914db1a53adef82fc38a30dc);
-    
-
-
-marker_a40d3f1d26f8a384228bc356a7db5d95.bindPopup(popup_743fe8290763a8c977aefa1ea70fc0df)
-;
-
-
-
-
-    marker_a40d3f1d26f8a384228bc356a7db5d95.bindTooltip(
-        `<div>
-             Kirana Store S (0.11 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_6e8ec8a5ed77d6e295eb4a659d0d3c88 = L.circle(
-        [18.9685, 72.8335],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 11.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_b99a0d2862c33d0ce4f4fbe5ef586119 = L.marker(
-        [18.9695, 72.832],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_8f58457c5809ffce6bf0950a684f3dbe = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_b99a0d2862c33d0ce4f4fbe5ef586119.setIcon(icon_8f58457c5809ffce6bf0950a684f3dbe);
-
-
-var popup_052f91e468f27a2cbd87ddde9ed495b6 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_eefc88edc23d1aafeebdade7b516b112 = $(`<div id="html_eefc88edc23d1aafeebdade7b516b112" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store B</h4>                 <b>Address:</b> 456 Market Road, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543211<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Household<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_052f91e468f27a2cbd87ddde9ed495b6.setContent(html_eefc88edc23d1aafeebdade7b516b112);
-    
-
-
-marker_b99a0d2862c33d0ce4f4fbe5ef586119.bindPopup(popup_052f91e468f27a2cbd87ddde9ed495b6)
-;
-
-
-
-
-    marker_b99a0d2862c33d0ce4f4fbe5ef586119.bindTooltip(
-        `<div>
-             Kirana Store B (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_1c90fbe3b3971046215b5a4dfdb68c74 = L.circle(
-        [18.9695, 72.832],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_6ef499dcd236aa45a3794fe59e046a8f = L.marker(
-        [18.9675, 72.832],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_f90ec36d0a56e39d7fd334e86202da06 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_6ef499dcd236aa45a3794fe59e046a8f.setIcon(icon_f90ec36d0a56e39d7fd334e86202da06);
-
-
-var popup_232e78b9e855c6f03d1a57f867b35384 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_9b00bffcf0af494f45ad8b78f341aaf4 = $(`<div id="html_9b00bffcf0af494f45ad8b78f341aaf4" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store L</h4>                 <b>Address:</b> 2627 Hospital Road, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543221<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pharmaceuticals<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_232e78b9e855c6f03d1a57f867b35384.setContent(html_9b00bffcf0af494f45ad8b78f341aaf4);
-    
-
-
-marker_6ef499dcd236aa45a3794fe59e046a8f.bindPopup(popup_232e78b9e855c6f03d1a57f867b35384)
-;
-
-
-
-
-    marker_6ef499dcd236aa45a3794fe59e046a8f.bindTooltip(
-        `<div>
-             Kirana Store L (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_2d2c9eca301f3f75b84964f39ed8e683 = L.circle(
-        [18.9675, 72.832],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_b02e42a53cd4ee3b3bcb9faab0c1deb1 = L.marker(
-        [18.9695, 72.833],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_fd872d2132f65b3ffcb23cc03523c067 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_b02e42a53cd4ee3b3bcb9faab0c1deb1.setIcon(icon_fd872d2132f65b3ffcb23cc03523c067);
-
-
-var popup_a32761f361f5a24d96f53c3b77a52f4b = L.popup({"maxWidth": 300});
-
-
-    
-        var html_d6fc82cbfa1ef14b637135d07fbce1fc = $(`<div id="html_d6fc82cbfa1ef14b637135d07fbce1fc" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store W</h4>                 <b>Address:</b> 4849 Parkside Drive, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543232<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Hardware<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_a32761f361f5a24d96f53c3b77a52f4b.setContent(html_d6fc82cbfa1ef14b637135d07fbce1fc);
-    
-
-
-marker_b02e42a53cd4ee3b3bcb9faab0c1deb1.bindPopup(popup_a32761f361f5a24d96f53c3b77a52f4b)
-;
-
-
-
-
-    marker_b02e42a53cd4ee3b3bcb9faab0c1deb1.bindTooltip(
-        `<div>
-             Kirana Store W (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_f2b7dbdc1ffcf91216d1054b73e0b7ce = L.circle(
-        [18.9695, 72.833],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_40cad0a3b31855be0009eafefaf6713d = L.marker(
-        [18.969, 72.8335],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_37946e3df5c0bfb17c2e10047f27b945 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_40cad0a3b31855be0009eafefaf6713d.setIcon(icon_37946e3df5c0bfb17c2e10047f27b945);
-
-
-var popup_bc74a8fec900a78be7699d65253ee600 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_3abebc8d61774a4b99cf95286edd88d1 = $(`<div id="html_3abebc8d61774a4b99cf95286edd88d1" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store AA</h4>                 <b>Address:</b> 5657 Market Place, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543236<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pet Supplies<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_bc74a8fec900a78be7699d65253ee600.setContent(html_3abebc8d61774a4b99cf95286edd88d1);
-    
-
-
-marker_40cad0a3b31855be0009eafefaf6713d.bindPopup(popup_bc74a8fec900a78be7699d65253ee600)
-;
-
-
-
-
-    marker_40cad0a3b31855be0009eafefaf6713d.bindTooltip(
-        `<div>
-             Kirana Store AA (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_31f24a18258d1b59d18732b97121759c = L.circle(
-        [18.969, 72.8335],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_fde0cbac1a55354c87d53ea8bd1cd548 = L.marker(
-        [18.9695, 72.832],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_c727df8ba81c444264b99d41ceaa05e9 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_fde0cbac1a55354c87d53ea8bd1cd548.setIcon(icon_c727df8ba81c444264b99d41ceaa05e9);
-
-
-var popup_2da5e13faf223c1594c0f96e909e2e36 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_180aaf93f7e2c3740a4001a760fc9e77 = $(`<div id="html_180aaf93f7e2c3740a4001a760fc9e77" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store EE</h4>                 <b>Address:</b> 6465 College Avenue, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543240<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Books<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_2da5e13faf223c1594c0f96e909e2e36.setContent(html_180aaf93f7e2c3740a4001a760fc9e77);
-    
-
-
-marker_fde0cbac1a55354c87d53ea8bd1cd548.bindPopup(popup_2da5e13faf223c1594c0f96e909e2e36)
-;
-
-
-
-
-    marker_fde0cbac1a55354c87d53ea8bd1cd548.bindTooltip(
-        `<div>
-             Kirana Store EE (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_3bb14b2c8f60bd0be22524a4ee0e778d = L.circle(
-        [18.9695, 72.832],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_78bb632c11bbad048cd2147682feac6c = L.marker(
-        [18.9695, 72.833],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_e760c20e0f1a7848a2187e54a29b203c = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_78bb632c11bbad048cd2147682feac6c.setIcon(icon_e760c20e0f1a7848a2187e54a29b203c);
-
-
-var popup_5f490f76efe318280e6270a0ff199dd2 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_ec2e2d240909d40ee34084c51e1855af = $(`<div id="html_ec2e2d240909d40ee34084c51e1855af" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store II</h4>                 <b>Address:</b> 7273 Hillside Drive, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543244<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Organic Products<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_5f490f76efe318280e6270a0ff199dd2.setContent(html_ec2e2d240909d40ee34084c51e1855af);
-    
-
-
-marker_78bb632c11bbad048cd2147682feac6c.bindPopup(popup_5f490f76efe318280e6270a0ff199dd2)
-;
-
-
-
-
-    marker_78bb632c11bbad048cd2147682feac6c.bindTooltip(
-        `<div>
-             Kirana Store II (0.12 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_9b918aece1cb5b59cc17f15e9d995919 = L.circle(
-        [18.9695, 72.833],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_e5c4f0412d9aa2a065a10822c5b16599 = L.marker(
-        [18.9675, 72.8315],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_5b30af9b91a491a90491ce7c187159ac = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_e5c4f0412d9aa2a065a10822c5b16599.setIcon(icon_5b30af9b91a491a90491ce7c187159ac);
-
-
-var popup_ffc74e97884032edef144b550de60c5c = L.popup({"maxWidth": 300});
-
-
-    
-        var html_41b384dcd295ded04a7f303121b6a696 = $(`<div id="html_41b384dcd295ded04a7f303121b6a696" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store H</h4>                 <b>Address:</b> 1819 Beach Road, Mumbai<br>                 <b>Distance:</b> 0.15 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543217<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.8315'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_ffc74e97884032edef144b550de60c5c.setContent(html_41b384dcd295ded04a7f303121b6a696);
-    
-
-
-marker_e5c4f0412d9aa2a065a10822c5b16599.bindPopup(popup_ffc74e97884032edef144b550de60c5c)
-;
-
-
-
-
-    marker_e5c4f0412d9aa2a065a10822c5b16599.bindTooltip(
-        `<div>
-             Kirana Store H (0.15 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_2e056b739439d52f89adbb1dfbb550ff = L.circle(
-        [18.9675, 72.8315],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 15.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_ae8ff743ba32de198b312cd9624b6ab9 = L.marker(
-        [18.969, 72.834],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_969f58e6c40f4e2c1b0769afc0e5a706 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_ae8ff743ba32de198b312cd9624b6ab9.setIcon(icon_969f58e6c40f4e2c1b0769afc0e5a706);
-
-
-var popup_ffe590e01948a90ed092015493cb60f6 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_cc09a2afe76dbbc6f2ce0460db3678bd = $(`<div id="html_cc09a2afe76dbbc6f2ce0460db3678bd" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store D</h4>                 <b>Address:</b> 1011 Commercial Street, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543213<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Household, Electronics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_ffe590e01948a90ed092015493cb60f6.setContent(html_cc09a2afe76dbbc6f2ce0460db3678bd);
-    
-
-
-marker_ae8ff743ba32de198b312cd9624b6ab9.bindPopup(popup_ffe590e01948a90ed092015493cb60f6)
-;
-
-
-
-
-    marker_ae8ff743ba32de198b312cd9624b6ab9.bindTooltip(
-        `<div>
-             Kirana Store D (0.17 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_0be17ea54576a85c8f37b4a519174f4e = L.circle(
-        [18.969, 72.834],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_f7adf56716ee8343271ad9251c6ddccf = L.marker(
-        [18.969, 72.831],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_b5508c5c4c2901dbe3f54a488685d21f = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_f7adf56716ee8343271ad9251c6ddccf.setIcon(icon_b5508c5c4c2901dbe3f54a488685d21f);
-
-
-var popup_fb1cf2d780dc3d7ad20fcd0d5333657a = L.popup({"maxWidth": 300});
-
-
-    
-        var html_81d068c4cc351b61f0d3fd9f6e6547f3 = $(`<div id="html_81d068c4cc351b61f0d3fd9f6e6547f3" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store M</h4>                 <b>Address:</b> 2829 College Street, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543222<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Books<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.831'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_fb1cf2d780dc3d7ad20fcd0d5333657a.setContent(html_81d068c4cc351b61f0d3fd9f6e6547f3);
-    
-
-
-marker_f7adf56716ee8343271ad9251c6ddccf.bindPopup(popup_fb1cf2d780dc3d7ad20fcd0d5333657a)
-;
-
-
-
-
-    marker_f7adf56716ee8343271ad9251c6ddccf.bindTooltip(
-        `<div>
-             Kirana Store M (0.17 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_eb6589fe0a26a78485077c266da930c7 = L.circle(
-        [18.969, 72.831],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_c2fe47878f76b1321fe61c212277e1d1 = L.marker(
-        [18.97, 72.8325],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_68b81f4384ec80a22e4b899c5dce71d1 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_c2fe47878f76b1321fe61c212277e1d1.setIcon(icon_68b81f4384ec80a22e4b899c5dce71d1);
-
-
-var popup_0467ea88c5938ee8b743c9a7bac97682 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_561e2a0a62476d6ec8a61e2fb8b13f5c = $(`<div id="html_561e2a0a62476d6ec8a61e2fb8b13f5c" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store T</h4>                 <b>Address:</b> 4243 Market Place, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543229<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Cosmetics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_0467ea88c5938ee8b743c9a7bac97682.setContent(html_561e2a0a62476d6ec8a61e2fb8b13f5c);
-    
-
-
-marker_c2fe47878f76b1321fe61c212277e1d1.bindPopup(popup_0467ea88c5938ee8b743c9a7bac97682)
-;
-
-
-
-
-    marker_c2fe47878f76b1321fe61c212277e1d1.bindTooltip(
-        `<div>
-             Kirana Store T (0.17 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_21a65345d7b468205683ec8b73784369 = L.circle(
-        [18.97, 72.8325],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_4d10f8f6c0f290b2aaef556163d8538c = L.marker(
-        [18.97, 72.833],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_d654e9d8c0a2fa2e339662caaabbead8 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_4d10f8f6c0f290b2aaef556163d8538c.setIcon(icon_d654e9d8c0a2fa2e339662caaabbead8);
-
-
-var popup_61f79e7145cce68b1d901cc7c18dabcf = L.popup({"maxWidth": 300});
-
-
-    
-        var html_6d3ad2279db2e8e229129505d25fc382 = $(`<div id="html_6d3ad2279db2e8e229129505d25fc382" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store CC</h4>                 <b>Address:</b> 6061 School Lane, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543238<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Toys<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_61f79e7145cce68b1d901cc7c18dabcf.setContent(html_6d3ad2279db2e8e229129505d25fc382);
-    
-
-
-marker_4d10f8f6c0f290b2aaef556163d8538c.bindPopup(popup_61f79e7145cce68b1d901cc7c18dabcf)
-;
-
-
-
-
-    marker_4d10f8f6c0f290b2aaef556163d8538c.bindTooltip(
-        `<div>
-             Kirana Store CC (0.17 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_c6e28e8639d512d7e62a23bdb52b5d04 = L.circle(
-        [18.97, 72.833],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_6690e5cd116ef70ed8b79917fee2a3c5 = L.marker(
-        [18.9701, 72.833],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_6cac3140ca4adfbb18fe63537114fe21 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_6690e5cd116ef70ed8b79917fee2a3c5.setIcon(icon_6cac3140ca4adfbb18fe63537114fe21);
-
-
-var popup_7baf19cbb2bd4b8c73abe1816db8f55b = L.popup({"maxWidth": 300});
-
-
-    
-        var html_307373e5de9fcf3ac6110f3ab3d7a138 = $(`<div id="html_307373e5de9fcf3ac6110f3ab3d7a138" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store A</h4>                 <b>Address:</b> 123 Main Street, Mumbai<br>                 <b>Distance:</b> 0.18 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543210<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9701&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_7baf19cbb2bd4b8c73abe1816db8f55b.setContent(html_307373e5de9fcf3ac6110f3ab3d7a138);
-    
-
-
-marker_6690e5cd116ef70ed8b79917fee2a3c5.bindPopup(popup_7baf19cbb2bd4b8c73abe1816db8f55b)
-;
-
-
-
-
-    marker_6690e5cd116ef70ed8b79917fee2a3c5.bindTooltip(
-        `<div>
-             Kirana Store A (0.18 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_d8c68955717a662ebc50987d02b439bd = L.circle(
-        [18.9701, 72.833],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 18.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_a7b29c0766c5c55652a2127133390954 = L.marker(
-        [18.9695, 72.834],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_8745f5153b14adf267b0dc2506a9c6f0 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_a7b29c0766c5c55652a2127133390954.setIcon(icon_8745f5153b14adf267b0dc2506a9c6f0);
-
-
-var popup_dab96a875bed04c457e6aca794da2358 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_52529acf58e31399ac8060dca1d75db7 = $(`<div id="html_52529acf58e31399ac8060dca1d75db7" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Q</h4>                 <b>Address:</b> 3637 Hill View, Mumbai<br>                 <b>Distance:</b> 0.19 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543226<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Organic Products<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_dab96a875bed04c457e6aca794da2358.setContent(html_52529acf58e31399ac8060dca1d75db7);
-    
-
-
-marker_a7b29c0766c5c55652a2127133390954.bindPopup(popup_dab96a875bed04c457e6aca794da2358)
-;
-
-
-
-
-    marker_a7b29c0766c5c55652a2127133390954.bindTooltip(
-        `<div>
-             Kirana Store Q (0.19 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_a40b182596410fa68dc6229615c54be0 = L.circle(
-        [18.9695, 72.834],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 19.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_129e7af650189c7daf88fe1da3037fa7 = L.marker(
-        [18.968, 72.8305],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_a3bdeb3b83a7cd42df58c418494b115e = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_129e7af650189c7daf88fe1da3037fa7.setIcon(icon_a3bdeb3b83a7cd42df58c418494b115e);
-
-
-var popup_2c2a778013d7736e6053a00cc6927822 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_2dc60b27377eb41118569027d87f2c14 = $(`<div id="html_2dc60b27377eb41118569027d87f2c14" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store V</h4>                 <b>Address:</b> 4647 City Center, Mumbai<br>                 <b>Distance:</b> 0.22 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543231<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Furniture<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8305'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_2c2a778013d7736e6053a00cc6927822.setContent(html_2dc60b27377eb41118569027d87f2c14);
-    
-
-
-marker_129e7af650189c7daf88fe1da3037fa7.bindPopup(popup_2c2a778013d7736e6053a00cc6927822)
-;
-
-
-
-
-    marker_129e7af650189c7daf88fe1da3037fa7.bindTooltip(
-        `<div>
-             Kirana Store V (0.22 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_976cb07783fd8031357df85346225b6a = L.circle(
-        [18.968, 72.8305],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 22.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_c0cf130def7a3506efb458ac3e309397 = L.marker(
-        [18.97, 72.834],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_7f7de0c5fa5f29bc13c8e03ba21e425e = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_c0cf130def7a3506efb458ac3e309397.setIcon(icon_7f7de0c5fa5f29bc13c8e03ba21e425e);
-
-
-var popup_62ed45ec0e6fe74ad3e3192e7b26472d = L.popup({"maxWidth": 300});
-
-
-    
-        var html_952cd1b227910466d7870401d49c8414 = $(`<div id="html_952cd1b227910466d7870401d49c8414" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store K</h4>                 <b>Address:</b> 2425 School Street, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543220<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Toys<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_62ed45ec0e6fe74ad3e3192e7b26472d.setContent(html_952cd1b227910466d7870401d49c8414);
-    
-
-
-marker_c0cf130def7a3506efb458ac3e309397.bindPopup(popup_62ed45ec0e6fe74ad3e3192e7b26472d)
-;
-
-
-
-
-    marker_c0cf130def7a3506efb458ac3e309397.bindTooltip(
-        `<div>
-             Kirana Store K (0.23 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_e23fc13d3598c1bdb12bcc75cfab5a46 = L.circle(
-        [18.97, 72.834],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_39914582e6c50d39093bfbf459f72601 = L.marker(
-        [18.9705, 72.832],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_9a66189928dacd78d3368e3a11435454 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_39914582e6c50d39093bfbf459f72601.setIcon(icon_9a66189928dacd78d3368e3a11435454);
-
-
-var popup_7d9eff5c4f140b7fb6e5033bb53c3323 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_b36d91463ba61f3ea536dd4c7c8b2d18 = $(`<div id="html_b36d91463ba61f3ea536dd4c7c8b2d18" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Y</h4>                 <b>Address:</b> 5253 Hillcrest Road, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543234<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Personal Care<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_7d9eff5c4f140b7fb6e5033bb53c3323.setContent(html_b36d91463ba61f3ea536dd4c7c8b2d18);
-    
-
-
-marker_39914582e6c50d39093bfbf459f72601.bindPopup(popup_7d9eff5c4f140b7fb6e5033bb53c3323)
-;
-
-
-
-
-    marker_39914582e6c50d39093bfbf459f72601.bindTooltip(
-        `<div>
-             Kirana Store Y (0.23 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_f3e0e444c7762b7467e01a6dda9a593f = L.circle(
-        [18.9705, 72.832],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_fbf56369617a46fba119d6b3e31d3a27 = L.marker(
-        [18.967, 72.831],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_afd8c5fd24cb9680e0475ef9fb1abcf5 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_fbf56369617a46fba119d6b3e31d3a27.setIcon(icon_afd8c5fd24cb9680e0475ef9fb1abcf5);
-
-
-var popup_d517bf3902002f46da44eb8266521466 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_f375628db7ab53d8762ee6c50da1890b = $(`<div id="html_f375628db7ab53d8762ee6c50da1890b" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store DD</h4>                 <b>Address:</b> 6263 Hospital Way, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543239<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pharmaceuticals<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.831'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_d517bf3902002f46da44eb8266521466.setContent(html_f375628db7ab53d8762ee6c50da1890b);
-    
-
-
-marker_fbf56369617a46fba119d6b3e31d3a27.bindPopup(popup_d517bf3902002f46da44eb8266521466)
-;
-
-
-
-
-    marker_fbf56369617a46fba119d6b3e31d3a27.bindTooltip(
-        `<div>
-             Kirana Store DD (0.23 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_eb1bf89d3abbf48fe61347f0b0c5a812 = L.circle(
-        [18.967, 72.831],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_cfa56ad10a8ec2a9318b18e25c7214fb = L.marker(
-        [18.9675, 72.8305],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_edb34515e8fd6f5fa674bea26f80583f = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_cfa56ad10a8ec2a9318b18e25c7214fb.setIcon(icon_edb34515e8fd6f5fa674bea26f80583f);
-
-
-var popup_85d8e1c3f8c446472e9afe4d033d5499 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_e95b44b2cdcc39a8fa06f40cc63ad83e = $(`<div id="html_e95b44b2cdcc39a8fa06f40cc63ad83e" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store BB</h4>                 <b>Address:</b> 5859 Station Square, Mumbai<br>                 <b>Distance:</b> 0.24 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543237<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Stationery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.8305'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_85d8e1c3f8c446472e9afe4d033d5499.setContent(html_e95b44b2cdcc39a8fa06f40cc63ad83e);
-    
-
-
-marker_cfa56ad10a8ec2a9318b18e25c7214fb.bindPopup(popup_85d8e1c3f8c446472e9afe4d033d5499)
-;
-
-
-
-
-    marker_cfa56ad10a8ec2a9318b18e25c7214fb.bindTooltip(
-        `<div>
-             Kirana Store BB (0.24 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_d33b43f1e4bf61914ba97255638bd57b = L.circle(
-        [18.9675, 72.8305],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 24.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_9cccbe3f0313ad7f0ebc83c8a85b73cb = L.marker(
-        [18.9665, 72.8315],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_252120885af43fc7144476297f559613 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_9cccbe3f0313ad7f0ebc83c8a85b73cb.setIcon(icon_252120885af43fc7144476297f559613);
-
-
-var popup_6e672213cb27600e5bf374228fdd153f = L.popup({"maxWidth": 300});
-
-
-    
-        var html_a79b95d65e05f4c52223cceada6e2bdb = $(`<div id="html_a79b95d65e05f4c52223cceada6e2bdb" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store U</h4>                 <b>Address:</b> 4445 Town Square, Mumbai<br>                 <b>Distance:</b> 0.25 km<br>                 <b>Est. Delivery:</b> 5 mins<br>                 <b>Contact:</b> 9876543230<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Electronics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9665&store_lon=72.8315'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_6e672213cb27600e5bf374228fdd153f.setContent(html_a79b95d65e05f4c52223cceada6e2bdb);
-    
-
-
-marker_9cccbe3f0313ad7f0ebc83c8a85b73cb.bindPopup(popup_6e672213cb27600e5bf374228fdd153f)
-;
-
-
-
-
-    marker_9cccbe3f0313ad7f0ebc83c8a85b73cb.bindTooltip(
-        `<div>
-             Kirana Store U (0.25 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_01255ad1f899c92ff2a804ce6d450dca = L.circle(
-        [18.9665, 72.8315],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 25.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_18dba573e88560f2e4631be063ee7b9a = L.marker(
-        [18.9675, 72.83],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_562ea2665bac9ca8b72b0969a5094cae = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_18dba573e88560f2e4631be063ee7b9a.setIcon(icon_562ea2665bac9ca8b72b0969a5094cae);
-
-
-var popup_0b8d87d124e2d9a2942ae0b65765605d = L.popup({"maxWidth": 300});
-
-
-    
-        var html_28632904c64c97634e1cd92109a28a6b = $(`<div id="html_28632904c64c97634e1cd92109a28a6b" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store X</h4>                 <b>Address:</b> 5051 Riverside Lane, Mumbai<br>                 <b>Distance:</b> 0.29 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543233<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Bakery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.83'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_0b8d87d124e2d9a2942ae0b65765605d.setContent(html_28632904c64c97634e1cd92109a28a6b);
-    
-
-
-marker_18dba573e88560f2e4631be063ee7b9a.bindPopup(popup_0b8d87d124e2d9a2942ae0b65765605d)
-;
-
-
-
-
-    marker_18dba573e88560f2e4631be063ee7b9a.bindTooltip(
-        `<div>
-             Kirana Store X (0.29 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_118f59810089372c54a940fe216b6740 = L.circle(
-        [18.9675, 72.83],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 28.999999999999996, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_7c8ba0b99333df1fac47de5b714d8176 = L.marker(
-        [18.971, 72.8335],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_a45624eab3ac1033d48ee3280fd0fd8a = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_7c8ba0b99333df1fac47de5b714d8176.setIcon(icon_a45624eab3ac1033d48ee3280fd0fd8a);
-
-
-var popup_fe5022536a87bd34900805ebc2b279f2 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_9633f24d71b8007f4f6b44c70398461d = $(`<div id="html_9633f24d71b8007f4f6b44c70398461d" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store F</h4>                 <b>Address:</b> 1415 Park Avenue, Mumbai<br>                 <b>Distance:</b> 0.3 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543215<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Bakery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_fe5022536a87bd34900805ebc2b279f2.setContent(html_9633f24d71b8007f4f6b44c70398461d);
-    
-
-
-marker_7c8ba0b99333df1fac47de5b714d8176.bindPopup(popup_fe5022536a87bd34900805ebc2b279f2)
-;
-
-
-
-
-    marker_7c8ba0b99333df1fac47de5b714d8176.bindTooltip(
-        `<div>
-             Kirana Store F (0.3 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_95a491000fb77d7461d69bdd09b19d47 = L.circle(
-        [18.971, 72.8335],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 30.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_e2a7b02ce6e5db7918f3e0aa1b126b04 = L.marker(
-        [18.971, 72.8335],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_73382e72668360c2579267c26ce1a35a = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_e2a7b02ce6e5db7918f3e0aa1b126b04.setIcon(icon_73382e72668360c2579267c26ce1a35a);
-
-
-var popup_5515a733a1eca0b860fc640fce589a0a = L.popup({"maxWidth": 300});
-
-
-    
-        var html_d0492799ae1a9d52ed308f6de7e2d529 = $(`<div id="html_d0492799ae1a9d52ed308f6de7e2d529" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store FF</h4>                 <b>Address:</b> 6667 Library Lane, Mumbai<br>                 <b>Distance:</b> 0.3 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543241<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Gifts<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_5515a733a1eca0b860fc640fce589a0a.setContent(html_d0492799ae1a9d52ed308f6de7e2d529);
-    
-
-
-marker_e2a7b02ce6e5db7918f3e0aa1b126b04.bindPopup(popup_5515a733a1eca0b860fc640fce589a0a)
-;
-
-
-
-
-    marker_e2a7b02ce6e5db7918f3e0aa1b126b04.bindTooltip(
-        `<div>
-             Kirana Store FF (0.3 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_a3e2b8f72d885a6a91dcbc97127f3394 = L.circle(
-        [18.971, 72.8335],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 30.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_577c068c9751afcb9c0ff4293c92d46c = L.marker(
-        [18.967, 72.83],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_bc4a4651ad0ed5e9a34200f56cd8308e = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_577c068c9751afcb9c0ff4293c92d46c.setIcon(icon_bc4a4651ad0ed5e9a34200f56cd8308e);
-
-
-var popup_dcab3ea44d57f869841302a47f6459d2 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_e63bb2f258314a6985c3bcd7a3678e17 = $(`<div id="html_e63bb2f258314a6985c3bcd7a3678e17" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store C</h4>                 <b>Address:</b> 789 Shopping Center, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543212<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Fruits, Vegetables<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.83'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_dcab3ea44d57f869841302a47f6459d2.setContent(html_e63bb2f258314a6985c3bcd7a3678e17);
-    
-
-
-marker_577c068c9751afcb9c0ff4293c92d46c.bindPopup(popup_dcab3ea44d57f869841302a47f6459d2)
-;
-
-
-
-
-    marker_577c068c9751afcb9c0ff4293c92d46c.bindTooltip(
-        `<div>
-             Kirana Store C (0.31 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_6c938eddbdb89eacf4e02f10f8622de1 = L.circle(
-        [18.967, 72.83],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_6238cbde45ddcea9e38f21dcc54a6d78 = L.marker(
-        [18.9705, 72.8345],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_c43605d32aae07e5fb212b928a0353e6 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_6238cbde45ddcea9e38f21dcc54a6d78.setIcon(icon_c43605d32aae07e5fb212b928a0353e6);
-
-
-var popup_b02753cf3d1a05fcc9681f1e22b2f26b = L.popup({"maxWidth": 300});
-
-
-    
-        var html_065d0359a2c7ce41b1ec309f188191cb = $(`<div id="html_065d0359a2c7ce41b1ec309f188191cb" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store G</h4>                 <b>Address:</b> 1617 Hill Road, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543216<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Personal Care<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_b02753cf3d1a05fcc9681f1e22b2f26b.setContent(html_065d0359a2c7ce41b1ec309f188191cb);
-    
-
-
-marker_6238cbde45ddcea9e38f21dcc54a6d78.bindPopup(popup_b02753cf3d1a05fcc9681f1e22b2f26b)
-;
-
-
-
-
-    marker_6238cbde45ddcea9e38f21dcc54a6d78.bindTooltip(
-        `<div>
-             Kirana Store G (0.31 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_9750bcd86ada309eb8c1e7a8451ade20 = L.circle(
-        [18.9705, 72.8345],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_bca7874a4bb4f18aec6c47a86df2742f = L.marker(
-        [18.9705, 72.8345],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_917ad11c1def9dc0abee8914b62a9799 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_bca7874a4bb4f18aec6c47a86df2742f.setIcon(icon_917ad11c1def9dc0abee8914b62a9799);
-
-
-var popup_7aa408b37ea736c384e54f2f660e30a1 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_9867406109efe7930cbd9ecf00d583d5 = $(`<div id="html_9867406109efe7930cbd9ecf00d583d5" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store GG</h4>                 <b>Address:</b> 6869 Parkside Drive, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543242<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Flowers<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_7aa408b37ea736c384e54f2f660e30a1.setContent(html_9867406109efe7930cbd9ecf00d583d5);
-    
-
-
-marker_bca7874a4bb4f18aec6c47a86df2742f.bindPopup(popup_7aa408b37ea736c384e54f2f660e30a1)
-;
-
-
-
-
-    marker_bca7874a4bb4f18aec6c47a86df2742f.bindTooltip(
-        `<div>
-             Kirana Store GG (0.31 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_68e05473b5afc1d97a49dcd60787d3d2 = L.circle(
-        [18.9705, 72.8345],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_47c18868aaf5a29b5be6508951fe2926 = L.marker(
-        [18.9685, 72.8295],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_aba4f434a9960a695eda8995006dacd5 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_47c18868aaf5a29b5be6508951fe2926.setIcon(icon_aba4f434a9960a695eda8995006dacd5);
-
-
-var popup_dfd6ee7ad47a8d6579128f6dd0cbf8fe = L.popup({"maxWidth": 300});
-
-
-    
-        var html_67bcbbd10ad08cd62c3fb6ab61ea1e9d = $(`<div id="html_67bcbbd10ad08cd62c3fb6ab61ea1e9d" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store J</h4>                 <b>Address:</b> 2223 Station Road, Mumbai<br>                 <b>Distance:</b> 0.32 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543219<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Stationery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9685&store_lon=72.8295'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_dfd6ee7ad47a8d6579128f6dd0cbf8fe.setContent(html_67bcbbd10ad08cd62c3fb6ab61ea1e9d);
-    
-
-
-marker_47c18868aaf5a29b5be6508951fe2926.bindPopup(popup_dfd6ee7ad47a8d6579128f6dd0cbf8fe)
-;
-
-
-
-
-    marker_47c18868aaf5a29b5be6508951fe2926.bindTooltip(
-        `<div>
-             Kirana Store J (0.32 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_fa535b21cac301abb7750a70447c9eb3 = L.circle(
-        [18.9685, 72.8295],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 32.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_0cb766d6d1aea1ed046b588130313c60 = L.marker(
-        [18.968, 72.8295],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_d7f3507b410a4e07ead6a13e4bfcd9d9 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_0cb766d6d1aea1ed046b588130313c60.setIcon(icon_d7f3507b410a4e07ead6a13e4bfcd9d9);
-
-
-var popup_7348588d8ae597f90a5ec0660d895a3c = L.popup({"maxWidth": 300});
-
-
-    
-        var html_9df4c0b7f841c7941a9404536085207d = $(`<div id="html_9df4c0b7f841c7941a9404536085207d" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Z</h4>                 <b>Address:</b> 5455 Beach Walk, Mumbai<br>                 <b>Distance:</b> 0.32 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543235<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8295'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_7348588d8ae597f90a5ec0660d895a3c.setContent(html_9df4c0b7f841c7941a9404536085207d);
-    
-
-
-marker_0cb766d6d1aea1ed046b588130313c60.bindPopup(popup_7348588d8ae597f90a5ec0660d895a3c)
-;
-
-
-
-
-    marker_0cb766d6d1aea1ed046b588130313c60.bindTooltip(
-        `<div>
-             Kirana Store Z (0.32 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_b7473cecabcdc75c324979eddf27732f = L.circle(
-        [18.968, 72.8295],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 32.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_540240d49e1e9dca1ec61217dcc326be = L.marker(
-        [18.971, 72.8345],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_cf94c9702f7c50efa2aa4000e48b3ff6 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_540240d49e1e9dca1ec61217dcc326be.setIcon(icon_cf94c9702f7c50efa2aa4000e48b3ff6);
-
-
-var popup_5879ef30f7fac8b4cf799992077df1a0 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_fbdfc833578c7a12f4a4424279d523fc = $(`<div id="html_fbdfc833578c7a12f4a4424279d523fc" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store N</h4>                 <b>Address:</b> 3031 Library Road, Mumbai<br>                 <b>Distance:</b> 0.35 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543223<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Gifts<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_5879ef30f7fac8b4cf799992077df1a0.setContent(html_fbdfc833578c7a12f4a4424279d523fc);
-    
-
-
-marker_540240d49e1e9dca1ec61217dcc326be.bindPopup(popup_5879ef30f7fac8b4cf799992077df1a0)
-;
-
-
-
-
-    marker_540240d49e1e9dca1ec61217dcc326be.bindTooltip(
-        `<div>
-             Kirana Store N (0.35 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_a51274135824e1e8921c1a72ee124ad6 = L.circle(
-        [18.971, 72.8345],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 35.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_e5bb74a283b07a9ba6eaf5c9e0312a3d = L.marker(
-        [18.968, 72.829],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_dcbed36bd4e0e6100af0786855a70166 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_e5bb74a283b07a9ba6eaf5c9e0312a3d.setIcon(icon_dcbed36bd4e0e6100af0786855a70166);
-
-
-var popup_632046d2db704092134bbcd37790a0b7 = L.popup({"maxWidth": 300});
-
-
-    
-        var html_b321e4643f30e36cac6a886b85983cb4 = $(`<div id="html_b321e4643f30e36cac6a886b85983cb4" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store E</h4>                 <b>Address:</b> 1213 Residential Lane, Mumbai<br>                 <b>Distance:</b> 0.37 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543214<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Fruits, Vegetables, Meat<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.829'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_632046d2db704092134bbcd37790a0b7.setContent(html_b321e4643f30e36cac6a886b85983cb4);
-    
-
-
-marker_e5bb74a283b07a9ba6eaf5c9e0312a3d.bindPopup(popup_632046d2db704092134bbcd37790a0b7)
-;
-
-
-
-
-    marker_e5bb74a283b07a9ba6eaf5c9e0312a3d.bindTooltip(
-        `<div>
-             Kirana Store E (0.37 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_7701cdd76f03bd5981bdf632b77f32c5 = L.circle(
-        [18.968, 72.829],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 37.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_7a692cef24e5c05cc08c0d799ab322df = L.marker(
-        [18.9705, 72.8355],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_6c6d823332dcb0e3106dbf994123607e = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_7a692cef24e5c05cc08c0d799ab322df.setIcon(icon_6c6d823332dcb0e3106dbf994123607e);
-
-
-var popup_75e496acc98e50ffe04e1dbffb5f8a36 = L.popup({"maxWidth": 300});
-
-
     
-        var html_7b0bc5e9b8830a2872baf1b04960589f = $(`<div id="html_7b0bc5e9b8830a2872baf1b04960589f" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store O</h4>                 <b>Address:</b> 3233 Park Lane, Mumbai<br>                 <b>Distance:</b> 0.39 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543224<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Flowers<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8355'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_75e496acc98e50ffe04e1dbffb5f8a36.setContent(html_7b0bc5e9b8830a2872baf1b04960589f);
     
-
-
-marker_7a692cef24e5c05cc08c0d799ab322df.bindPopup(popup_75e496acc98e50ffe04e1dbffb5f8a36)
-;
-
-
-
-
-    marker_7a692cef24e5c05cc08c0d799ab322df.bindTooltip(
-        `<div>
-             Kirana Store O (0.39 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_6f0709f8b6508625cbb69095a3b28170 = L.circle(
-        [18.9705, 72.8355],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 39.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var marker_9333ca844051bf2558a60fe7cbbe5acf = L.marker(
-        [18.967, 72.829],
-        {}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var icon_c5d5a20b36b55d59416fc5d75bc366ef = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
-    );
-    marker_9333ca844051bf2558a60fe7cbbe5acf.setIcon(icon_c5d5a20b36b55d59416fc5d75bc366ef);
-
-
-var popup_df16ed8736d49188a0211572a9a3fc5b = L.popup({"maxWidth": 300});
-
-
-    
-        var html_f252c30ad350d7bd2e874304c18f266d = $(`<div id="html_f252c30ad350d7bd2e874304c18f266d" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store R</h4>                 <b>Address:</b> 3839 Ocean Drive, Mumbai<br>                 <b>Distance:</b> 0.4 km<br>                 <b>Est. Delivery:</b> 6 mins<br>                 <b>Contact:</b> 9876543227<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.829'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
-        popup_df16ed8736d49188a0211572a9a3fc5b.setContent(html_f252c30ad350d7bd2e874304c18f266d);
-    
-
-
-marker_9333ca844051bf2558a60fe7cbbe5acf.bindPopup(popup_df16ed8736d49188a0211572a9a3fc5b)
-;
-
-
-
-
-    marker_9333ca844051bf2558a60fe7cbbe5acf.bindTooltip(
-        `<div>
-             Kirana Store R (0.4 km)
-         </div>`,
-        {"sticky": true}
-    );
-
-
-    var circle_4d14ab3b5367221dc2497b1b0473c277 = L.circle(
-        [18.967, 72.829],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 40.0, "stroke": true, "weight": 3}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var circle_b8548be3e26f55360a9f031c0e2e072a = L.circle(
-        [18.9685, 72.8325],
-        {"bubblingMouseEvents": true, "color": "red", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 1}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var circle_81a9fc67bd6986cb676fe93fc97cfdaf = L.circle(
-        [18.9685, 72.8325],
-        {"bubblingMouseEvents": true, "color": "orange", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000, "stroke": true, "weight": 1}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
-
-    var circle_5574fe04da69a05fe9b16887588127f6 = L.circle(
-        [18.9685, 72.8325],
-        {"bubblingMouseEvents": true, "color": "blue", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500.0, "stroke": true, "weight": 1}
-    ).addTo(map_d1ed6f3019039c67ee276403cf131b3c);
-
+            var map_cfc49a0bf3373888b51e2d6828f60cf9 = L.map(
+                "map_cfc49a0bf3373888b51e2d6828f60cf9",
+                {
+                    center: [18.9685, 72.8325],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_880a5c7f0904b1293a8c414367d467b5 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 20, "maxZoom": 20, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+        
+    
+            tile_layer_880a5c7f0904b1293a8c414367d467b5.addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_cab20b4d61f1527aff887b4e07acccf3 = L.marker(
+                [18.9685, 72.8325],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_6350a66490e9a0b57fa6562b4b7d1c82 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "home", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_cab20b4d61f1527aff887b4e07acccf3.setIcon(icon_6350a66490e9a0b57fa6562b4b7d1c82);
+        
+    
+        var popup_6416f4b2521f44af68b773b59e352936 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_484fef8cc4389a618c62ea812cdc30ca = $(`<div id="html_484fef8cc4389a618c62ea812cdc30ca" style="width: 100.0%; height: 100.0%;">Your Location</div>`)[0];
+                popup_6416f4b2521f44af68b773b59e352936.setContent(html_484fef8cc4389a618c62ea812cdc30ca);
+            
+        
+
+        marker_cab20b4d61f1527aff887b4e07acccf3.bindPopup(popup_6416f4b2521f44af68b773b59e352936)
+        ;
+
+        
+    
+    
+            var marker_11dbc348341064e59eef9115dfe3746b = L.marker(
+                [18.968, 72.8325],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_b20ce09f993122708a771ef75514712a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_11dbc348341064e59eef9115dfe3746b.setIcon(icon_b20ce09f993122708a771ef75514712a);
+        
+    
+        var popup_d789974b00b6d1930c0f3376ce40826a = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_8fcd3da63a294fc111678c83596a4d4e = $(`<div id="html_8fcd3da63a294fc111678c83596a4d4e" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store HH</h4>                 <b>Address:</b> 7071 Riverview Road, Mumbai<br>                 <b>Distance:</b> 0.06 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543243<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Sweets<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_d789974b00b6d1930c0f3376ce40826a.setContent(html_8fcd3da63a294fc111678c83596a4d4e);
+            
+        
+
+        marker_11dbc348341064e59eef9115dfe3746b.bindPopup(popup_d789974b00b6d1930c0f3376ce40826a)
+        ;
+
+        
+    
+    
+            marker_11dbc348341064e59eef9115dfe3746b.bindTooltip(
+                `<div>
+                     Kirana Store HH (0.06 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a41004b1f874b0d01d43fd9a6e5a4c5a = L.circle(
+                [18.968, 72.8325],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 6.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_2d89d7cb281ab55fb3e78fc10a6da3d3 = L.marker(
+                [18.968, 72.833],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_574744d8f693715e3b21e683d599751e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_2d89d7cb281ab55fb3e78fc10a6da3d3.setIcon(icon_574744d8f693715e3b21e683d599751e);
+        
+    
+        var popup_f84793d41d1b13579f38b6b45d319296 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_1ccae940bfdfc91f55748ea78a203492 = $(`<div id="html_1ccae940bfdfc91f55748ea78a203492" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store P</h4>                 <b>Address:</b> 3435 River Road, Mumbai<br>                 <b>Distance:</b> 0.08 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543225<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Sweets<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_f84793d41d1b13579f38b6b45d319296.setContent(html_1ccae940bfdfc91f55748ea78a203492);
+            
+        
+
+        marker_2d89d7cb281ab55fb3e78fc10a6da3d3.bindPopup(popup_f84793d41d1b13579f38b6b45d319296)
+        ;
+
+        
+    
+    
+            marker_2d89d7cb281ab55fb3e78fc10a6da3d3.bindTooltip(
+                `<div>
+                     Kirana Store P (0.08 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1d5ec4b81e34855e531daea4fa22fe45 = L.circle(
+                [18.968, 72.833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 8.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_da87ee9c293266540757a2ecf8ea0757 = L.marker(
+                [18.9695, 72.8325],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_418700bcec27017dae509c126f287b95 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_da87ee9c293266540757a2ecf8ea0757.setIcon(icon_418700bcec27017dae509c126f287b95);
+        
+    
+        var popup_328e52aa170be40970293d27a2b70732 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_39653451100a5b8ab258be5c1f59d710 = $(`<div id="html_39653451100a5b8ab258be5c1f59d710" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store I</h4>                 <b>Address:</b> 2021 Market Lane, Mumbai<br>                 <b>Distance:</b> 0.11 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543218<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pet Supplies<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_328e52aa170be40970293d27a2b70732.setContent(html_39653451100a5b8ab258be5c1f59d710);
+            
+        
+
+        marker_da87ee9c293266540757a2ecf8ea0757.bindPopup(popup_328e52aa170be40970293d27a2b70732)
+        ;
+
+        
+    
+    
+            marker_da87ee9c293266540757a2ecf8ea0757.bindTooltip(
+                `<div>
+                     Kirana Store I (0.11 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_90475111bcb63521107ab913fd238574 = L.circle(
+                [18.9695, 72.8325],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 11.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_3b5b50f445d917c469b8366c923d238c = L.marker(
+                [18.9685, 72.8335],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_a88a584e7f12254ef6fc604eeae3c2c3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_3b5b50f445d917c469b8366c923d238c.setIcon(icon_a88a584e7f12254ef6fc604eeae3c2c3);
+        
+    
+        var popup_077cb996f236fd2a392a2a9a5f6adc8d = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_ee44a00aad93896c3b0d84ad854184f8 = $(`<div id="html_ee44a00aad93896c3b0d84ad854184f8" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store S</h4>                 <b>Address:</b> 4041 Green Street, Mumbai<br>                 <b>Distance:</b> 0.11 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543228<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Home Decor<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9685&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_077cb996f236fd2a392a2a9a5f6adc8d.setContent(html_ee44a00aad93896c3b0d84ad854184f8);
+            
+        
+
+        marker_3b5b50f445d917c469b8366c923d238c.bindPopup(popup_077cb996f236fd2a392a2a9a5f6adc8d)
+        ;
+
+        
+    
+    
+            marker_3b5b50f445d917c469b8366c923d238c.bindTooltip(
+                `<div>
+                     Kirana Store S (0.11 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ae83dc51a128cb9fb982adbf2ceeaa56 = L.circle(
+                [18.9685, 72.8335],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 11.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_b652ef0892ea0af0a942bf5585d91ebc = L.marker(
+                [18.9695, 72.832],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_370eca9297d510179f47a8985ff248d7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b652ef0892ea0af0a942bf5585d91ebc.setIcon(icon_370eca9297d510179f47a8985ff248d7);
+        
+    
+        var popup_efb5c2665e2be6ea0969eb309ded99d2 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_48e674ada6fb516a8f80abc47faaeff4 = $(`<div id="html_48e674ada6fb516a8f80abc47faaeff4" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store B</h4>                 <b>Address:</b> 456 Market Road, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543211<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Household<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_efb5c2665e2be6ea0969eb309ded99d2.setContent(html_48e674ada6fb516a8f80abc47faaeff4);
+            
+        
+
+        marker_b652ef0892ea0af0a942bf5585d91ebc.bindPopup(popup_efb5c2665e2be6ea0969eb309ded99d2)
+        ;
+
+        
+    
+    
+            marker_b652ef0892ea0af0a942bf5585d91ebc.bindTooltip(
+                `<div>
+                     Kirana Store B (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_4e28f19057720860a48a17b8adb23eff = L.circle(
+                [18.9695, 72.832],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_26efbadad3ab62ec3d07c24fefa691e1 = L.marker(
+                [18.9675, 72.832],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_853c296a047e4704c7d3e0cdbe2c2083 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_26efbadad3ab62ec3d07c24fefa691e1.setIcon(icon_853c296a047e4704c7d3e0cdbe2c2083);
+        
+    
+        var popup_a9ed0faba428c1e39378429afa13fb7c = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_7399a2e8cd86583af798c8b5182584a2 = $(`<div id="html_7399a2e8cd86583af798c8b5182584a2" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store L</h4>                 <b>Address:</b> 2627 Hospital Road, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543221<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pharmaceuticals<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_a9ed0faba428c1e39378429afa13fb7c.setContent(html_7399a2e8cd86583af798c8b5182584a2);
+            
+        
+
+        marker_26efbadad3ab62ec3d07c24fefa691e1.bindPopup(popup_a9ed0faba428c1e39378429afa13fb7c)
+        ;
+
+        
+    
+    
+            marker_26efbadad3ab62ec3d07c24fefa691e1.bindTooltip(
+                `<div>
+                     Kirana Store L (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5527ad1799a4995ca7a61b8e7903a05c = L.circle(
+                [18.9675, 72.832],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_6c0e26a3558eb6454c7b8befe2a0430f = L.marker(
+                [18.9695, 72.833],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_63ea25411aa789472353fb85ca48671f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_6c0e26a3558eb6454c7b8befe2a0430f.setIcon(icon_63ea25411aa789472353fb85ca48671f);
+        
+    
+        var popup_363db222bedda0becf57fc7115f59525 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_34a52ad1418f07f0b82e551bb3557dfb = $(`<div id="html_34a52ad1418f07f0b82e551bb3557dfb" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store W</h4>                 <b>Address:</b> 4849 Parkside Drive, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543232<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Hardware<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_363db222bedda0becf57fc7115f59525.setContent(html_34a52ad1418f07f0b82e551bb3557dfb);
+            
+        
+
+        marker_6c0e26a3558eb6454c7b8befe2a0430f.bindPopup(popup_363db222bedda0becf57fc7115f59525)
+        ;
+
+        
+    
+    
+            marker_6c0e26a3558eb6454c7b8befe2a0430f.bindTooltip(
+                `<div>
+                     Kirana Store W (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_da515ed58fb5858ded5d4a8b4baa13f3 = L.circle(
+                [18.9695, 72.833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_c0c03ce1af9df2b350de5b404148b923 = L.marker(
+                [18.969, 72.8335],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_e7b2b567f6d9ef6c3677882e6e993a0a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_c0c03ce1af9df2b350de5b404148b923.setIcon(icon_e7b2b567f6d9ef6c3677882e6e993a0a);
+        
+    
+        var popup_f347e19e7eefc9b173f332b19a8df764 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_9e1d74e1ab03d96bff3ec2b52d56fc23 = $(`<div id="html_9e1d74e1ab03d96bff3ec2b52d56fc23" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store AA</h4>                 <b>Address:</b> 5657 Market Place, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543236<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pet Supplies<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_f347e19e7eefc9b173f332b19a8df764.setContent(html_9e1d74e1ab03d96bff3ec2b52d56fc23);
+            
+        
+
+        marker_c0c03ce1af9df2b350de5b404148b923.bindPopup(popup_f347e19e7eefc9b173f332b19a8df764)
+        ;
+
+        
+    
+    
+            marker_c0c03ce1af9df2b350de5b404148b923.bindTooltip(
+                `<div>
+                     Kirana Store AA (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_05cbdbf43c9783a31180d79ef5febde0 = L.circle(
+                [18.969, 72.8335],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_ebc86d3137573947abe5fdd37937cac2 = L.marker(
+                [18.9695, 72.832],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_59726743366c34e423af0d8d683c1c00 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ebc86d3137573947abe5fdd37937cac2.setIcon(icon_59726743366c34e423af0d8d683c1c00);
+        
+    
+        var popup_5a5e655f919699bebd72a9328e4f3e89 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_e3c706fa663f73e8ade7d40ae6dccaa5 = $(`<div id="html_e3c706fa663f73e8ade7d40ae6dccaa5" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store EE</h4>                 <b>Address:</b> 6465 College Avenue, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543240<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Books<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_5a5e655f919699bebd72a9328e4f3e89.setContent(html_e3c706fa663f73e8ade7d40ae6dccaa5);
+            
+        
+
+        marker_ebc86d3137573947abe5fdd37937cac2.bindPopup(popup_5a5e655f919699bebd72a9328e4f3e89)
+        ;
+
+        
+    
+    
+            marker_ebc86d3137573947abe5fdd37937cac2.bindTooltip(
+                `<div>
+                     Kirana Store EE (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_8c65542a6523b29df05a958d4a74edb3 = L.circle(
+                [18.9695, 72.832],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_57de7dff103487020ab1d3de3ca0e486 = L.marker(
+                [18.9695, 72.833],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_587766da7d9d5ba09db7477dd537c7f7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_57de7dff103487020ab1d3de3ca0e486.setIcon(icon_587766da7d9d5ba09db7477dd537c7f7);
+        
+    
+        var popup_18e4a46cbee2e453604963482ce62291 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_3f7f3e812333594342d0481bc18d4e61 = $(`<div id="html_3f7f3e812333594342d0481bc18d4e61" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store II</h4>                 <b>Address:</b> 7273 Hillside Drive, Mumbai<br>                 <b>Distance:</b> 0.12 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543244<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Organic Products<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_18e4a46cbee2e453604963482ce62291.setContent(html_3f7f3e812333594342d0481bc18d4e61);
+            
+        
+
+        marker_57de7dff103487020ab1d3de3ca0e486.bindPopup(popup_18e4a46cbee2e453604963482ce62291)
+        ;
+
+        
+    
+    
+            marker_57de7dff103487020ab1d3de3ca0e486.bindTooltip(
+                `<div>
+                     Kirana Store II (0.12 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_33c03d79cf5f06c70af4a86b90452dad = L.circle(
+                [18.9695, 72.833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 12.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_9fbcb709880dbb877972e9b3b70b013f = L.marker(
+                [18.9675, 72.8315],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_13cf9c5e74e72078760d128e5fb708a7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_9fbcb709880dbb877972e9b3b70b013f.setIcon(icon_13cf9c5e74e72078760d128e5fb708a7);
+        
+    
+        var popup_da751427a81d99f9d068de770864f951 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_710af27e7e7522fec367244f0d2d3ddf = $(`<div id="html_710af27e7e7522fec367244f0d2d3ddf" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store H</h4>                 <b>Address:</b> 1819 Beach Road, Mumbai<br>                 <b>Distance:</b> 0.15 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543217<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.8315'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_da751427a81d99f9d068de770864f951.setContent(html_710af27e7e7522fec367244f0d2d3ddf);
+            
+        
+
+        marker_9fbcb709880dbb877972e9b3b70b013f.bindPopup(popup_da751427a81d99f9d068de770864f951)
+        ;
+
+        
+    
+    
+            marker_9fbcb709880dbb877972e9b3b70b013f.bindTooltip(
+                `<div>
+                     Kirana Store H (0.15 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_efabcb5914a34152e17b8ab1e98e9565 = L.circle(
+                [18.9675, 72.8315],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 15.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_67720d334e7cec16fe86926fb8a9af63 = L.marker(
+                [18.969, 72.834],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_f6e2b13385c5c43e6ab0556a5d409c95 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_67720d334e7cec16fe86926fb8a9af63.setIcon(icon_f6e2b13385c5c43e6ab0556a5d409c95);
+        
+    
+        var popup_b9c2dd58e4a9e0368ecc421c4ad1735c = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_9ad99657f4f4fb08d44c7b5fe85d1d78 = $(`<div id="html_9ad99657f4f4fb08d44c7b5fe85d1d78" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store D</h4>                 <b>Address:</b> 1011 Commercial Street, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543213<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Household, Electronics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_b9c2dd58e4a9e0368ecc421c4ad1735c.setContent(html_9ad99657f4f4fb08d44c7b5fe85d1d78);
+            
+        
+
+        marker_67720d334e7cec16fe86926fb8a9af63.bindPopup(popup_b9c2dd58e4a9e0368ecc421c4ad1735c)
+        ;
+
+        
+    
+    
+            marker_67720d334e7cec16fe86926fb8a9af63.bindTooltip(
+                `<div>
+                     Kirana Store D (0.17 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0e7234b9ad671acc4a2039dfe477e4ee = L.circle(
+                [18.969, 72.834],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_713557f337949f986f3e1f8d30a597d9 = L.marker(
+                [18.969, 72.831],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_5abfe086d04fec7f13a0a70f243636f7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_713557f337949f986f3e1f8d30a597d9.setIcon(icon_5abfe086d04fec7f13a0a70f243636f7);
+        
+    
+        var popup_664fcec600c8fec96684e5a7178324ca = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_bacb0fcc8117f67f85fa83c2ebf5cfc8 = $(`<div id="html_bacb0fcc8117f67f85fa83c2ebf5cfc8" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store M</h4>                 <b>Address:</b> 2829 College Street, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543222<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Books<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.969&store_lon=72.831'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_664fcec600c8fec96684e5a7178324ca.setContent(html_bacb0fcc8117f67f85fa83c2ebf5cfc8);
+            
+        
+
+        marker_713557f337949f986f3e1f8d30a597d9.bindPopup(popup_664fcec600c8fec96684e5a7178324ca)
+        ;
+
+        
+    
+    
+            marker_713557f337949f986f3e1f8d30a597d9.bindTooltip(
+                `<div>
+                     Kirana Store M (0.17 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_1a1c94909445ee9eea6788bac8f2aef8 = L.circle(
+                [18.969, 72.831],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_9d3abfb9b9f764a952e99fdbc024dca8 = L.marker(
+                [18.97, 72.8325],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_26255064ff837fca1502ca65640c954f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_9d3abfb9b9f764a952e99fdbc024dca8.setIcon(icon_26255064ff837fca1502ca65640c954f);
+        
+    
+        var popup_aa1af6027af3acd278a0bae5d7a06909 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_d99626a0052f0929bc8869235291bde5 = $(`<div id="html_d99626a0052f0929bc8869235291bde5" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store T</h4>                 <b>Address:</b> 4243 Market Place, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543229<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Cosmetics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.8325'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_aa1af6027af3acd278a0bae5d7a06909.setContent(html_d99626a0052f0929bc8869235291bde5);
+            
+        
+
+        marker_9d3abfb9b9f764a952e99fdbc024dca8.bindPopup(popup_aa1af6027af3acd278a0bae5d7a06909)
+        ;
+
+        
+    
+    
+            marker_9d3abfb9b9f764a952e99fdbc024dca8.bindTooltip(
+                `<div>
+                     Kirana Store T (0.17 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_086167f32af81778a1ed90fd0cecb231 = L.circle(
+                [18.97, 72.8325],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_fa708047b6dd2786c280a7ee93c4f814 = L.marker(
+                [18.97, 72.833],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_031013c7a9a1e358335de2ac8973f138 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_fa708047b6dd2786c280a7ee93c4f814.setIcon(icon_031013c7a9a1e358335de2ac8973f138);
+        
+    
+        var popup_2a32ed226a19dfa1f7a3990437550d08 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_1e7966eabe9b66a6264f3e817b2a831a = $(`<div id="html_1e7966eabe9b66a6264f3e817b2a831a" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store CC</h4>                 <b>Address:</b> 6061 School Lane, Mumbai<br>                 <b>Distance:</b> 0.17 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543238<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Toys<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_2a32ed226a19dfa1f7a3990437550d08.setContent(html_1e7966eabe9b66a6264f3e817b2a831a);
+            
+        
+
+        marker_fa708047b6dd2786c280a7ee93c4f814.bindPopup(popup_2a32ed226a19dfa1f7a3990437550d08)
+        ;
+
+        
+    
+    
+            marker_fa708047b6dd2786c280a7ee93c4f814.bindTooltip(
+                `<div>
+                     Kirana Store CC (0.17 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a69727b2b9fcddaa5267addcdfad87ab = L.circle(
+                [18.97, 72.833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 17.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_9b3a5524fe6f4de0f43d70dc8b500be1 = L.marker(
+                [18.9701, 72.833],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_2c7f21d8b71cf43b7c031e399af9390c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_9b3a5524fe6f4de0f43d70dc8b500be1.setIcon(icon_2c7f21d8b71cf43b7c031e399af9390c);
+        
+    
+        var popup_2c2855f624f39a4d0bad4f8f097ba902 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_0dfa6807aab9e9b22d11400ab92fef0b = $(`<div id="html_0dfa6807aab9e9b22d11400ab92fef0b" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store A</h4>                 <b>Address:</b> 123 Main Street, Mumbai<br>                 <b>Distance:</b> 0.18 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543210<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9701&store_lon=72.833'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_2c2855f624f39a4d0bad4f8f097ba902.setContent(html_0dfa6807aab9e9b22d11400ab92fef0b);
+            
+        
+
+        marker_9b3a5524fe6f4de0f43d70dc8b500be1.bindPopup(popup_2c2855f624f39a4d0bad4f8f097ba902)
+        ;
+
+        
+    
+    
+            marker_9b3a5524fe6f4de0f43d70dc8b500be1.bindTooltip(
+                `<div>
+                     Kirana Store A (0.18 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a4fc7be0b441cf236e26e009097ab1f4 = L.circle(
+                [18.9701, 72.833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 18.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_6367ccacf913db03f6afc26290669e68 = L.marker(
+                [18.9695, 72.834],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_b0f2dcada0eed8ca1953b2f25ba7ec07 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_6367ccacf913db03f6afc26290669e68.setIcon(icon_b0f2dcada0eed8ca1953b2f25ba7ec07);
+        
+    
+        var popup_3a3db3e232dd05d8059a6693ff25e870 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_eee047f31b53a4255bfea8b1d58bdb34 = $(`<div id="html_eee047f31b53a4255bfea8b1d58bdb34" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Q</h4>                 <b>Address:</b> 3637 Hill View, Mumbai<br>                 <b>Distance:</b> 0.19 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543226<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Organic Products<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9695&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_3a3db3e232dd05d8059a6693ff25e870.setContent(html_eee047f31b53a4255bfea8b1d58bdb34);
+            
+        
+
+        marker_6367ccacf913db03f6afc26290669e68.bindPopup(popup_3a3db3e232dd05d8059a6693ff25e870)
+        ;
+
+        
+    
+    
+            marker_6367ccacf913db03f6afc26290669e68.bindTooltip(
+                `<div>
+                     Kirana Store Q (0.19 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_11250a7b0c320ac4639e457463c55f61 = L.circle(
+                [18.9695, 72.834],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 19.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_050438d98f11c1425ea26dd39da255c7 = L.marker(
+                [18.968, 72.8305],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_c2f90a3516ec3834be26bcb434c2726e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_050438d98f11c1425ea26dd39da255c7.setIcon(icon_c2f90a3516ec3834be26bcb434c2726e);
+        
+    
+        var popup_31451dabe49b2c05e8b4e9ca2335eb70 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_5bc1cd6665ad0f923cc05954ca7002aa = $(`<div id="html_5bc1cd6665ad0f923cc05954ca7002aa" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store V</h4>                 <b>Address:</b> 4647 City Center, Mumbai<br>                 <b>Distance:</b> 0.22 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543231<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Furniture<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8305'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_31451dabe49b2c05e8b4e9ca2335eb70.setContent(html_5bc1cd6665ad0f923cc05954ca7002aa);
+            
+        
+
+        marker_050438d98f11c1425ea26dd39da255c7.bindPopup(popup_31451dabe49b2c05e8b4e9ca2335eb70)
+        ;
+
+        
+    
+    
+            marker_050438d98f11c1425ea26dd39da255c7.bindTooltip(
+                `<div>
+                     Kirana Store V (0.22 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_5a959ed885c2a936483d86b2c1cb158c = L.circle(
+                [18.968, 72.8305],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 22.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_52617134a3ae6b1cc9019d92225a70d1 = L.marker(
+                [18.97, 72.834],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_76dee2eb1bec2c4537090b541578f38e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_52617134a3ae6b1cc9019d92225a70d1.setIcon(icon_76dee2eb1bec2c4537090b541578f38e);
+        
+    
+        var popup_87ab2161bab1c7578ac6ea9fc0ec7412 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_146de0b039eb3b42fc94144fb6107ef7 = $(`<div id="html_146de0b039eb3b42fc94144fb6107ef7" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store K</h4>                 <b>Address:</b> 2425 School Street, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543220<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Toys<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.97&store_lon=72.834'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_87ab2161bab1c7578ac6ea9fc0ec7412.setContent(html_146de0b039eb3b42fc94144fb6107ef7);
+            
+        
+
+        marker_52617134a3ae6b1cc9019d92225a70d1.bindPopup(popup_87ab2161bab1c7578ac6ea9fc0ec7412)
+        ;
+
+        
+    
+    
+            marker_52617134a3ae6b1cc9019d92225a70d1.bindTooltip(
+                `<div>
+                     Kirana Store K (0.23 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_67b0a7727c27ea80aadb2081b72788f0 = L.circle(
+                [18.97, 72.834],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_eb7367f113a1a4c52b31aba796cea919 = L.marker(
+                [18.9705, 72.832],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_dea61db797e223dc893032e29a93f898 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_eb7367f113a1a4c52b31aba796cea919.setIcon(icon_dea61db797e223dc893032e29a93f898);
+        
+    
+        var popup_cd71534b697e97e9d75397ab46352172 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_449eceed46a82fb53d37e1010ba20246 = $(`<div id="html_449eceed46a82fb53d37e1010ba20246" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Y</h4>                 <b>Address:</b> 5253 Hillcrest Road, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543234<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Personal Care<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.832'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_cd71534b697e97e9d75397ab46352172.setContent(html_449eceed46a82fb53d37e1010ba20246);
+            
+        
+
+        marker_eb7367f113a1a4c52b31aba796cea919.bindPopup(popup_cd71534b697e97e9d75397ab46352172)
+        ;
+
+        
+    
+    
+            marker_eb7367f113a1a4c52b31aba796cea919.bindTooltip(
+                `<div>
+                     Kirana Store Y (0.23 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b97d2a91a79e361a33f1c77536740c81 = L.circle(
+                [18.9705, 72.832],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_1118ec0b373dca389e07eb191a4b82f8 = L.marker(
+                [18.967, 72.831],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_2bc0f99b0b0733e6f19e0b8c71a48744 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_1118ec0b373dca389e07eb191a4b82f8.setIcon(icon_2bc0f99b0b0733e6f19e0b8c71a48744);
+        
+    
+        var popup_b243f2b41f299ba4da7d4af034db9a41 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_bc875dca99043347f750c69dfd4c4346 = $(`<div id="html_bc875dca99043347f750c69dfd4c4346" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store DD</h4>                 <b>Address:</b> 6263 Hospital Way, Mumbai<br>                 <b>Distance:</b> 0.23 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543239<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Pharmaceuticals<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.831'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_b243f2b41f299ba4da7d4af034db9a41.setContent(html_bc875dca99043347f750c69dfd4c4346);
+            
+        
+
+        marker_1118ec0b373dca389e07eb191a4b82f8.bindPopup(popup_b243f2b41f299ba4da7d4af034db9a41)
+        ;
+
+        
+    
+    
+            marker_1118ec0b373dca389e07eb191a4b82f8.bindTooltip(
+                `<div>
+                     Kirana Store DD (0.23 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_b0b469f61cdbdfa20864e87067c5eeb6 = L.circle(
+                [18.967, 72.831],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 23.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_b5934027c5af25decb47d78e3d3396e3 = L.marker(
+                [18.9675, 72.8305],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_601d9e05d4791b76c5af41b557232fc2 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b5934027c5af25decb47d78e3d3396e3.setIcon(icon_601d9e05d4791b76c5af41b557232fc2);
+        
+    
+        var popup_a5c371a8be0dbea61fbdad89c19a0b9d = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_51a0b03da1fabd714f7c7a204b9112c6 = $(`<div id="html_51a0b03da1fabd714f7c7a204b9112c6" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store BB</h4>                 <b>Address:</b> 5859 Station Square, Mumbai<br>                 <b>Distance:</b> 0.24 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543237<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Stationery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.8305'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_a5c371a8be0dbea61fbdad89c19a0b9d.setContent(html_51a0b03da1fabd714f7c7a204b9112c6);
+            
+        
+
+        marker_b5934027c5af25decb47d78e3d3396e3.bindPopup(popup_a5c371a8be0dbea61fbdad89c19a0b9d)
+        ;
+
+        
+    
+    
+            marker_b5934027c5af25decb47d78e3d3396e3.bindTooltip(
+                `<div>
+                     Kirana Store BB (0.24 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_271dc844207de30c41d3850012586782 = L.circle(
+                [18.9675, 72.8305],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 24.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_508a2c174b0bc5c1bf3d62b5708d13d1 = L.marker(
+                [18.9665, 72.8315],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_717e25dfe6fede3bede46779a2109a8d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_508a2c174b0bc5c1bf3d62b5708d13d1.setIcon(icon_717e25dfe6fede3bede46779a2109a8d);
+        
+    
+        var popup_b5616a8e684121e2f46914c7ef300229 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_3facfd39b54b5ccb4cfcbffeb122661a = $(`<div id="html_3facfd39b54b5ccb4cfcbffeb122661a" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store U</h4>                 <b>Address:</b> 4445 Town Square, Mumbai<br>                 <b>Distance:</b> 0.25 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543230<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Electronics<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9665&store_lon=72.8315'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_b5616a8e684121e2f46914c7ef300229.setContent(html_3facfd39b54b5ccb4cfcbffeb122661a);
+            
+        
+
+        marker_508a2c174b0bc5c1bf3d62b5708d13d1.bindPopup(popup_b5616a8e684121e2f46914c7ef300229)
+        ;
+
+        
+    
+    
+            marker_508a2c174b0bc5c1bf3d62b5708d13d1.bindTooltip(
+                `<div>
+                     Kirana Store U (0.25 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_a9b784dc3a8219cd6f25de50d1f8a8f3 = L.circle(
+                [18.9665, 72.8315],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 25.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_adacdf219332346c484d5cf50c1127be = L.marker(
+                [18.9675, 72.83],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_aceb2c21090fd46e40f069cdcb8f9250 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_adacdf219332346c484d5cf50c1127be.setIcon(icon_aceb2c21090fd46e40f069cdcb8f9250);
+        
+    
+        var popup_9f06620a9cf2151f235e05a1701bb5d7 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_b52bd325fa9f72db365df0ad9ab0d902 = $(`<div id="html_b52bd325fa9f72db365df0ad9ab0d902" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store X</h4>                 <b>Address:</b> 5051 Riverside Lane, Mumbai<br>                 <b>Distance:</b> 0.29 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543233<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Bakery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9675&store_lon=72.83'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_9f06620a9cf2151f235e05a1701bb5d7.setContent(html_b52bd325fa9f72db365df0ad9ab0d902);
+            
+        
+
+        marker_adacdf219332346c484d5cf50c1127be.bindPopup(popup_9f06620a9cf2151f235e05a1701bb5d7)
+        ;
+
+        
+    
+    
+            marker_adacdf219332346c484d5cf50c1127be.bindTooltip(
+                `<div>
+                     Kirana Store X (0.29 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_de69ccc9049827d34340ab4dfcf4912b = L.circle(
+                [18.9675, 72.83],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 28.999999999999996, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_da553ce32ae1df946bfb613d0fe48f84 = L.marker(
+                [18.971, 72.8335],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_7b684b361d5fc9bca15e562cacc18260 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_da553ce32ae1df946bfb613d0fe48f84.setIcon(icon_7b684b361d5fc9bca15e562cacc18260);
+        
+    
+        var popup_5fe73f831ad14b9fede6fabf0cd51f96 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_0ea5b1a7b30906f484aea157a30d411e = $(`<div id="html_0ea5b1a7b30906f484aea157a30d411e" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store F</h4>                 <b>Address:</b> 1415 Park Avenue, Mumbai<br>                 <b>Distance:</b> 0.3 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543215<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Bakery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_5fe73f831ad14b9fede6fabf0cd51f96.setContent(html_0ea5b1a7b30906f484aea157a30d411e);
+            
+        
+
+        marker_da553ce32ae1df946bfb613d0fe48f84.bindPopup(popup_5fe73f831ad14b9fede6fabf0cd51f96)
+        ;
+
+        
+    
+    
+            marker_da553ce32ae1df946bfb613d0fe48f84.bindTooltip(
+                `<div>
+                     Kirana Store F (0.3 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_df31c4c0a210c932f73bcd27d4888abd = L.circle(
+                [18.971, 72.8335],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 30.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_11b602efa5f59c17c439eb5b8882570f = L.marker(
+                [18.971, 72.8335],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_d9c6e9ed03baddc3393d5c44bb81dc57 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_11b602efa5f59c17c439eb5b8882570f.setIcon(icon_d9c6e9ed03baddc3393d5c44bb81dc57);
+        
+    
+        var popup_f3997b5859787e915baffac9fd206888 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_91bf5d7ede1e29aabb26025b3bb692a2 = $(`<div id="html_91bf5d7ede1e29aabb26025b3bb692a2" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store FF</h4>                 <b>Address:</b> 6667 Library Lane, Mumbai<br>                 <b>Distance:</b> 0.3 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543241<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Gifts<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8335'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_f3997b5859787e915baffac9fd206888.setContent(html_91bf5d7ede1e29aabb26025b3bb692a2);
+            
+        
+
+        marker_11b602efa5f59c17c439eb5b8882570f.bindPopup(popup_f3997b5859787e915baffac9fd206888)
+        ;
+
+        
+    
+    
+            marker_11b602efa5f59c17c439eb5b8882570f.bindTooltip(
+                `<div>
+                     Kirana Store FF (0.3 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_e5a01e82fc84bd0395851b56a3f1ac05 = L.circle(
+                [18.971, 72.8335],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 30.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_db0aba4519ffa3299534d1c973b05ed3 = L.marker(
+                [18.967, 72.83],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_497aac858ac443abd717fe53fd897109 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_db0aba4519ffa3299534d1c973b05ed3.setIcon(icon_497aac858ac443abd717fe53fd897109);
+        
+    
+        var popup_7eae5c051ec88e44e3e4f08ceaec4d46 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_d513249d46763ef4b1ce3ec2c8076f3a = $(`<div id="html_d513249d46763ef4b1ce3ec2c8076f3a" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store C</h4>                 <b>Address:</b> 789 Shopping Center, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543212<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Fruits, Vegetables<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.83'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_7eae5c051ec88e44e3e4f08ceaec4d46.setContent(html_d513249d46763ef4b1ce3ec2c8076f3a);
+            
+        
+
+        marker_db0aba4519ffa3299534d1c973b05ed3.bindPopup(popup_7eae5c051ec88e44e3e4f08ceaec4d46)
+        ;
+
+        
+    
+    
+            marker_db0aba4519ffa3299534d1c973b05ed3.bindTooltip(
+                `<div>
+                     Kirana Store C (0.31 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_ce36157ad14a1c293958fe09556b41dd = L.circle(
+                [18.967, 72.83],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_e3a6822136b189041bcb2721d1fae810 = L.marker(
+                [18.9705, 72.8345],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_a23440c7ec2b128b292e5fcaba0f2983 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_e3a6822136b189041bcb2721d1fae810.setIcon(icon_a23440c7ec2b128b292e5fcaba0f2983);
+        
+    
+        var popup_bed24556707ac73057ccb3435117afda = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_b085590830cc9b57e45787ac14793e3e = $(`<div id="html_b085590830cc9b57e45787ac14793e3e" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store G</h4>                 <b>Address:</b> 1617 Hill Road, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543216<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Personal Care<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_bed24556707ac73057ccb3435117afda.setContent(html_b085590830cc9b57e45787ac14793e3e);
+            
+        
+
+        marker_e3a6822136b189041bcb2721d1fae810.bindPopup(popup_bed24556707ac73057ccb3435117afda)
+        ;
+
+        
+    
+    
+            marker_e3a6822136b189041bcb2721d1fae810.bindTooltip(
+                `<div>
+                     Kirana Store G (0.31 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_16b466d875d3d2c14b8bfd8a7df00808 = L.circle(
+                [18.9705, 72.8345],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_526e9c2bf852608e5b865fa7e1a4e19e = L.marker(
+                [18.9705, 72.8345],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_42c8cf17c843959f77e5036054f318d1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_526e9c2bf852608e5b865fa7e1a4e19e.setIcon(icon_42c8cf17c843959f77e5036054f318d1);
+        
+    
+        var popup_215144ed836dc8d463f73ee021393450 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_ca455541e6ebde7d6047f2066afcaf96 = $(`<div id="html_ca455541e6ebde7d6047f2066afcaf96" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store GG</h4>                 <b>Address:</b> 6869 Parkside Drive, Mumbai<br>                 <b>Distance:</b> 0.31 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543242<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Flowers<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_215144ed836dc8d463f73ee021393450.setContent(html_ca455541e6ebde7d6047f2066afcaf96);
+            
+        
+
+        marker_526e9c2bf852608e5b865fa7e1a4e19e.bindPopup(popup_215144ed836dc8d463f73ee021393450)
+        ;
+
+        
+    
+    
+            marker_526e9c2bf852608e5b865fa7e1a4e19e.bindTooltip(
+                `<div>
+                     Kirana Store GG (0.31 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_eb3b8f64e18a8e0a3a68be9d7679402b = L.circle(
+                [18.9705, 72.8345],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 31.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_cab7b45482618d347f132c189ac3ddbf = L.marker(
+                [18.9685, 72.8295],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_67a6e732edffc5c55419dfe00f07ac17 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_cab7b45482618d347f132c189ac3ddbf.setIcon(icon_67a6e732edffc5c55419dfe00f07ac17);
+        
+    
+        var popup_b551b772d44b37d2c917dcee7d27fa0b = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_719409f7226ab9e2a116c59449c11d6c = $(`<div id="html_719409f7226ab9e2a116c59449c11d6c" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store J</h4>                 <b>Address:</b> 2223 Station Road, Mumbai<br>                 <b>Distance:</b> 0.32 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543219<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Stationery<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9685&store_lon=72.8295'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_b551b772d44b37d2c917dcee7d27fa0b.setContent(html_719409f7226ab9e2a116c59449c11d6c);
+            
+        
+
+        marker_cab7b45482618d347f132c189ac3ddbf.bindPopup(popup_b551b772d44b37d2c917dcee7d27fa0b)
+        ;
+
+        
+    
+    
+            marker_cab7b45482618d347f132c189ac3ddbf.bindTooltip(
+                `<div>
+                     Kirana Store J (0.32 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0c13e4b14d491d41d167151e4d9a251e = L.circle(
+                [18.9685, 72.8295],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 32.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_a5cea1d6f1a20acac923e836e1775bda = L.marker(
+                [18.968, 72.8295],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_b4470c861ace2a32048d27c9ffa81d76 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_a5cea1d6f1a20acac923e836e1775bda.setIcon(icon_b4470c861ace2a32048d27c9ffa81d76);
+        
+    
+        var popup_b9334c4486cc90ee82bf49eafd81fe71 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_e7f65826f1db528c6f5370e63c4ad30d = $(`<div id="html_e7f65826f1db528c6f5370e63c4ad30d" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store Z</h4>                 <b>Address:</b> 5455 Beach Walk, Mumbai<br>                 <b>Distance:</b> 0.32 km<br>                 <b>Est. Delivery:</b> 8 mins<br>                 <b>Contact:</b> 9876543235<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.8295'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_b9334c4486cc90ee82bf49eafd81fe71.setContent(html_e7f65826f1db528c6f5370e63c4ad30d);
+            
+        
+
+        marker_a5cea1d6f1a20acac923e836e1775bda.bindPopup(popup_b9334c4486cc90ee82bf49eafd81fe71)
+        ;
+
+        
+    
+    
+            marker_a5cea1d6f1a20acac923e836e1775bda.bindTooltip(
+                `<div>
+                     Kirana Store Z (0.32 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_cef3d4611653a5e4e8114952293543ed = L.circle(
+                [18.968, 72.8295],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 32.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_ce454012e1d6c8e2df9f8e2d3b33f3e9 = L.marker(
+                [18.971, 72.8345],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_db1d593ec7cc361d0845b277fc982908 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ce454012e1d6c8e2df9f8e2d3b33f3e9.setIcon(icon_db1d593ec7cc361d0845b277fc982908);
+        
+    
+        var popup_4b30f579c0dcc1b3efdd543f064aa787 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_b70ad106bba918174021ae64c98c673f = $(`<div id="html_b70ad106bba918174021ae64c98c673f" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store N</h4>                 <b>Address:</b> 3031 Library Road, Mumbai<br>                 <b>Distance:</b> 0.35 km<br>                 <b>Est. Delivery:</b> 9 mins<br>                 <b>Contact:</b> 9876543223<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Gifts<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.971&store_lon=72.8345'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_4b30f579c0dcc1b3efdd543f064aa787.setContent(html_b70ad106bba918174021ae64c98c673f);
+            
+        
+
+        marker_ce454012e1d6c8e2df9f8e2d3b33f3e9.bindPopup(popup_4b30f579c0dcc1b3efdd543f064aa787)
+        ;
+
+        
+    
+    
+            marker_ce454012e1d6c8e2df9f8e2d3b33f3e9.bindTooltip(
+                `<div>
+                     Kirana Store N (0.35 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_835e9655a193210cfa838ccf8e90cff6 = L.circle(
+                [18.971, 72.8345],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 35.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_16f867515b902916b2be0153a56b86be = L.marker(
+                [18.968, 72.829],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_f2155577c7e7efb08a6a0d9309e0c02f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_16f867515b902916b2be0153a56b86be.setIcon(icon_f2155577c7e7efb08a6a0d9309e0c02f);
+        
+    
+        var popup_d4dfa5b0df29beb815834b3246a48f87 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_6d0133218a21e65c4040c850ca5648d3 = $(`<div id="html_6d0133218a21e65c4040c850ca5648d3" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store E</h4>                 <b>Address:</b> 1213 Residential Lane, Mumbai<br>                 <b>Distance:</b> 0.37 km<br>                 <b>Est. Delivery:</b> 9 mins<br>                 <b>Contact:</b> 9876543214<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Fruits, Vegetables, Meat<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.968&store_lon=72.829'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_d4dfa5b0df29beb815834b3246a48f87.setContent(html_6d0133218a21e65c4040c850ca5648d3);
+            
+        
+
+        marker_16f867515b902916b2be0153a56b86be.bindPopup(popup_d4dfa5b0df29beb815834b3246a48f87)
+        ;
+
+        
+    
+    
+            marker_16f867515b902916b2be0153a56b86be.bindTooltip(
+                `<div>
+                     Kirana Store E (0.37 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_04bc17213a628f74f303b63af1dfd010 = L.circle(
+                [18.968, 72.829],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 37.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_f37f2004b030952538f883de8485d6d0 = L.marker(
+                [18.9705, 72.8355],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_95e8bda67529a2a97c46d62498b3e057 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_f37f2004b030952538f883de8485d6d0.setIcon(icon_95e8bda67529a2a97c46d62498b3e057);
+        
+    
+        var popup_7c32782677479514b69f3d5e648a44e3 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_efb440b4067a62a1e7633b712a4475e7 = $(`<div id="html_efb440b4067a62a1e7633b712a4475e7" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store O</h4>                 <b>Address:</b> 3233 Park Lane, Mumbai<br>                 <b>Distance:</b> 0.39 km<br>                 <b>Est. Delivery:</b> 9 mins<br>                 <b>Contact:</b> 9876543224<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Flowers<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.9705&store_lon=72.8355'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_7c32782677479514b69f3d5e648a44e3.setContent(html_efb440b4067a62a1e7633b712a4475e7);
+            
+        
+
+        marker_f37f2004b030952538f883de8485d6d0.bindPopup(popup_7c32782677479514b69f3d5e648a44e3)
+        ;
+
+        
+    
+    
+            marker_f37f2004b030952538f883de8485d6d0.bindTooltip(
+                `<div>
+                     Kirana Store O (0.39 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_0d5808dcc45af36b602bbbd47bb7bade = L.circle(
+                [18.9705, 72.8355],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 39.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var marker_0385596d9eea44c30d59ff91305d9991 = L.marker(
+                [18.967, 72.829],
+                {}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var icon_6402cbe619a7207496cf63f7db4c59d4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_0385596d9eea44c30d59ff91305d9991.setIcon(icon_6402cbe619a7207496cf63f7db4c59d4);
+        
+    
+        var popup_ee5a27d99fb2187f704839ae3a712740 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_8efc06b39f3f505ac37007683419a435 = $(`<div id="html_8efc06b39f3f505ac37007683419a435" style="width: 100.0%; height: 100.0%;">             <div style='width: 200px; font-size: 14px;'>                 <h4 style='color: red; margin: 0 0 8px 0;'>Kirana Store R</h4>                 <b>Address:</b> 3839 Ocean Drive, Mumbai<br>                 <b>Distance:</b> 0.4 km<br>                 <b>Est. Delivery:</b> 9 mins<br>                 <b>Contact:</b> 9876543227<br>                 <b>Categories:</b> Groceries, Dairy, Beverages, Snacks, Seafood<br>                 <button onclick="window.location.href='/api/stores/route?user_lat=18.9685&user_lon=72.8325&store_lat=18.967&store_lon=72.829'"                          style='margin-top: 8px; padding: 8px; width: 100%; background-color: #007bff; color: white; border: none; border-radius: 4px;'>                     Get Route                 </button>             </div>             </div>`)[0];
+                popup_ee5a27d99fb2187f704839ae3a712740.setContent(html_8efc06b39f3f505ac37007683419a435);
+            
+        
+
+        marker_0385596d9eea44c30d59ff91305d9991.bindPopup(popup_ee5a27d99fb2187f704839ae3a712740)
+        ;
+
+        
+    
+    
+            marker_0385596d9eea44c30d59ff91305d9991.bindTooltip(
+                `<div>
+                     Kirana Store R (0.4 km)
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var circle_194d8a2267ecbb00078455ded539cbbf = L.circle(
+                [18.967, 72.829],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.1, "radius": 40.0, "stroke": true, "weight": 3}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var circle_3f371d8a1978f4196125a9d89b166b1c = L.circle(
+                [18.9685, 72.8325],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 1}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var circle_82abd61db0065ee2f7915511fda9fc7e = L.circle(
+                [18.9685, 72.8325],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5000, "stroke": true, "weight": 1}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
+    
+            var circle_f853dea80bd0d448632a25cd7c08a39e = L.circle(
+                [18.9685, 72.8325],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": "5, 5", "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000.0, "stroke": true, "weight": 1}
+            ).addTo(map_cfc49a0bf3373888b51e2d6828f60cf9);
+        
 </script>
 </html>
-    <div class="legend">
-        <b>Distance Zones</b><br>
-        <span style="color: red;">●</span> &lt; 2 km<br>
-        <span style="color: orange;">●</span> 2-5 km<br>
-        <span style="color: blue;">●</span> &gt; 5 km
-    </div>
-    <div class="info-box">
-        <b>Search Radius:</b> 500.0 km<br>
-        <b>Stores Found:</b> 35
-    </div>
-    <script>
-        window.onload = function() {
-            setTimeout(function() {
-                window.dispatchEvent(new Event('resize'));
-            }, 1000);
-        };
-    </script>
-</body>
-</html>
+            <div class="legend">
+                <b>Distance Zones</b><br>
+                <span style="color: red;">●</span> &lt; 2 km<br>
+                <span style="color: orange;">●</span> 2-5 km<br>
+                <span style="color: blue;">●</span> &gt; 5 km
+            </div>
+            <div class="info-box">
+                <b>Search Radius:</b> 2000.0 km<br>
+                <b>Stores Found:</b> 35
+            </div>
+            <script>
+                window.onload = function() {
+                    setTimeout(function() {
+                        window.dispatchEvent(new Event('resize'));
+                    }, 1000);
+                };
+            </script>
+        </body>
+        </html>
+        

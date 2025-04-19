@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, json
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -18,6 +18,20 @@ from rtree import index
 
 app = Flask(__name__)
 CORS(app)
+
+# Create a custom JSONEncoder that can handle NumPy types
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(CustomJSONEncoder, self).default(obj)
+
+# Set the custom encoder for Flask app
+app.json_encoder = CustomJSONEncoder
 
 # Create temp directory for files
 os.makedirs('temp', exist_ok=True)
@@ -109,13 +123,13 @@ class StoreLocator:
                 nearby_stores.append({
                     'store_name': store['Store Name'],
                     'address': store['Address'],
-                    'contact': store['Contact Number'],
+                    'contact': str(store['Contact Number']),  # Convert to string to avoid int64 issues
                     'distance': round(distance, 2),
-                    'estimated_delivery_time': delivery_time,
+                    'estimated_delivery_time': int(delivery_time),  # Ensure integer type
                     'product_categories': store['Product Categories'],
                     'location': {
-                        'lat': store['Latitude'],
-                        'lon': store['Longitude']
+                        'lat': float(store['Latitude']),  # Ensure float type
+                        'lon': float(store['Longitude'])  # Ensure float type
                     }
                 })
         
