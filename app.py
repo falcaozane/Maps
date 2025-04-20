@@ -261,7 +261,73 @@ def create_route_animation_data(G, path_time, path_length):
 
 @app.route('/', methods=['GET']) 
 def home():
-    return "Welcome to falcao-maps"
+    text = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>falcao-maps API Documentation</title>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }}
+            h1, h2 {{
+                color: #333;
+            }}
+            pre {{
+                background-color: #f4f4f4;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }}
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to falcao-maps</h1>
+        <p>Based on your uploaded dataset and deployed API, here are example API calls for your client:</p>
+
+        <h2>1. Find Nearby Stores (JSON Response)</h2>
+        <pre>
+https://maps-yiv5.onrender.com/api/stores/nearby?lat=18.9695&lon=72.8320&radius=1
+        </pre>
+        <p>Use this to get store details near Market Road area within 1km</p>
+
+        <h2>2. View Basic Store Map</h2>
+        <pre>
+https://maps-yiv5.onrender.com/api/stores/map?lat=18.9701&lon=72.8330&radius=0.5
+        </pre>
+        <p>Shows map centered at Main Street with 500m radius</p>
+
+        <h2>3. View All Store Locations with Color Coding</h2>
+        <pre>
+https://maps-yiv5.onrender.com/api/stores/locations?lat=18.9685&lon=72.8325&radius=2
+        </pre>
+        <p>Shows detailed map with color-coded stores within 2km</p>
+
+        <h2>4. Get Route Between Points</h2>
+        <p>Example routes:</p>
+        <pre>
+# Route from Park Avenue to Hill Road stores
+https://maps-yiv5.onrender.com/api/stores/route?user_lat=18.9710&user_lon=72.8335&store_lat=18.9705&store_lon=72.8345&viz_type=simple
+
+# Route from Main Street to Market Road stores
+https://maps-yiv5.onrender.com/api/stores/route?user_lat=18.9701&user_lon=72.8330&store_lat=18.9695&store_lon=72.8320&viz_type=simple
+        </pre>
+
+        <h2>Key Location Points in Dataset:</h2>
+        <ul>
+            <li>Main Street Area: 18.9701, 72.8330</li>
+            <li>Park Avenue: 18.9710, 72.8335</li>
+            <li>Market Road: 18.9695, 72.8320</li>
+            <li>Shopping Center: 18.9670, 72.8300</li>
+            <li>Commercial Street: 18.9690, 72.8340</li>
+        </ul>
+    </body>
+    </html>
+    """
+    return f"{text}"
 
 
 @app.route('/api/stores/nearby', methods=['GET'])
